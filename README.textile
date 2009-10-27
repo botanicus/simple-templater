@@ -7,7 +7,7 @@ h1. Usage
 <pre>
 require "simple-templater"
 
-SimpleTemplater.config do
+SimpleTemplater::Project.new do
 	self.name = "rango"
 	self.logger = Rango.logger
 end

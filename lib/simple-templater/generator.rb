@@ -9,7 +9,6 @@ require_relative "main"
 # yes? etc
 require "cli"
 
-
 # TODO
 # metadata :file option for rendering just one file
 # gem installation (for plugin)
@@ -32,8 +31,7 @@ require "cli"
 
 # content/foo
 # xxx/bar
-# => rango generate bigproject blog --models=post,tag --controllers=posts,tags
-
+# => simple-templater project blog --models=post,tag --controllers=posts,tags
 module SimpleTemplater
   class Generator
     def self.rango_root
