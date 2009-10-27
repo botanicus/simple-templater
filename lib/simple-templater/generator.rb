@@ -8,7 +8,7 @@ require_relative "templater"
 
 # yes? etc
 require "rango/ext/cli"
-include Rango::CLI
+
 
 # TODO
 # metadata :file option for rendering just one file
@@ -34,91 +34,89 @@ include Rango::CLI
 # xxx/bar
 # => rango generate bigproject blog --models=post,tag --controllers=posts,tags
 
-module Rango
-  module CLI
-    class Generator
-      def self.rango_root
-        File.expand_path(File.join(File.dirname(__FILE__), "..", "..", ".."))
-      end
+module SimpleTemplater
+  class Generator
+    def self.rango_root
+      File.expand_path(File.join(File.dirname(__FILE__), "..", "..", ".."))
+    end
 
-      def self.stubs_dirs
-        ["#{os.home}/.rango/stubs", "#{self.rango_root}/stubs"]
-      end
+    def self.stubs_dirs
+      ["#{os.home}/.rango/stubs", "#{self.rango_root}/stubs"]
+    end
 
-      def self.list
-        output = Hash.new
-        self.stubs_dirs.each do |directory|
-          files = map { |directory| Dir["#{directory}/*"] }.flatten
-          directories = files.select { |file| Dir.exist?(file) }
-          output[directory] = directories
-        end
-        return output
+    def self.list
+      output = Hash.new
+      self.stubs_dirs.each do |directory|
+        files = map { |directory| Dir["#{directory}/*"] }.flatten
+        directories = files.select { |file| Dir.exist?(file) }
+        output[directory] = directories
       end
+      return output
+    end
 
-      def initialize(type, name, *args)
-        @type, @name, @args = type, name, args
-        if File.exist?(name)
-          abort "#{name} already exist, aborting."
-        end
+    def initialize(type, name, *args)
+      @type, @name, @args = type, name, args
+      if File.exist?(name)
+        abort "#{name} already exist, aborting."
       end
+    end
 
-      def stubs_dirs
-        dirs = self.class.stubs_dirs.dup
-        dirs.map! { |dir| "#{dir}/#{@type}" }
-        dirs.find { |dir| Dir.exist?(dir) }
+    def stubs_dirs
+      dirs = self.class.stubs_dirs.dup
+      dirs.map! { |dir| "#{dir}/#{@type}" }
+      dirs.find { |dir| Dir.exist?(dir) }
+    end
+
+    def content_dir
+      "#{@stubs_dir}/content"
+    end
+
+    def create
+      self.stubs_dirs.each do |stubs_dir|
+        @stubs_dir = stubs_dir
+        self.proceed
       end
+    end
 
-      def content_dir
-        "#{@stubs_dir}/content"
-      end
-
-      def create
-        self.stubs_dirs.each do |stubs_dir|
-          @stubs_dir = stubs_dir
-          self.proceed
-        end
-      end
-
-      def proceed
-        Rango.logger.info("Creating #{@type} #{@name} from stubs in #{@stubs_dir}")
-        FileUtils.mkdir_p(@name)
-        Dir.chdir(@name) do
-          ARGV.clear.push(*[self.content_dir, @args].flatten.compact)
-          if File.exist?(hook = File.join(@stubs_dir, "preprocess.rb"))
-            load hook
-          else
-            Rango::CLI::Templater.create(self.content_dir)
-          end
-        end
-        self.run_init_hook
-      end
-
-      def run_init_hook
-        Dir.chdir(@name) do
-          if File.exist?(hook = File.join(@stubs_dir, "postprocess.rb"))
-            load(hook) && Rango.logger.inspect("Running postprocess.rb hook")
-          end
+    def proceed
+      Rango.logger.info("Creating #{@type} #{@name} from stubs in #{@stubs_dir}")
+      FileUtils.mkdir_p(@name)
+      Dir.chdir(@name) do
+        ARGV.clear.push(*[self.content_dir, @args].flatten.compact)
+        if File.exist?(hook = File.join(@stubs_dir, "preprocess.rb"))
+          load hook
+        else
+          Rango::CLI::Templater.create(self.content_dir)
         end
       end
+      self.run_init_hook
+    end
 
-      def validations
-        ["diff", "full"].include?(self.config.type)
+    def run_init_hook
+      Dir.chdir(@name) do
+        if File.exist?(hook = File.join(@stubs_dir, "postprocess.rb"))
+          load(hook) && Rango.logger.inspect("Running postprocess.rb hook")
+        end
       end
+    end
 
-      # Metadata options
-      # :type: full|diff
-      # :file: flat.ru
-      def metadata
-        metadata_file = File.join(@stubs_dir, "metadata.yml")
-        YAML::load_file(metadata_file)
-      rescue Errno::ENOENT
-        Rango.logger.fatal("Rango expected '#{metadata_file}'")
-      end
+    def validations
+      ["diff", "full"].include?(self.config.type)
+    end
 
-      def config
-        defaults = {processing: true, type: "full"}
-        OpenStruct.new(defaults.merge(self.metadata))
-      end
+    # Metadata options
+    # :type: full|diff
+    # :file: flat.ru
+    def metadata
+      metadata_file = File.join(@stubs_dir, "metadata.yml")
+      YAML::load_file(metadata_file)
+    rescue Errno::ENOENT
+      Rango.logger.fatal("Rango expected '#{metadata_file}'")
+    end
+
+    def config
+      defaults = {processing: true, type: "full"}
+      OpenStruct.new(defaults.merge(self.metadata))
     end
   end
 end
