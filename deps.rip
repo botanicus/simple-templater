@@ -1,0 +1,7 @@
+#!/usr/bin/env rip install
+
+# Syntax:
+# repository [tag or commit to install]
+git://github.com/botanicus/cli.git
+git://github.com/botanicus/rubyexts.git
+git://github.com/genki/erubis.git
