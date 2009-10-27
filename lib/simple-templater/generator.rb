@@ -4,10 +4,10 @@ require "yaml"
 require "ostruct"
 require "fileutils"
 
-require_relative "templater"
+require_relative "main"
 
 # yes? etc
-require "rango/ext/cli"
+require "cli"
 
 
 # TODO

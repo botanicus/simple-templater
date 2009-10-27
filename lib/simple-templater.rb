@@ -1,11 +1,11 @@
-#!/usr/bin/env ruby1.9 -Ivendor/rubyexts/lib
+#!/usr/bin/env ruby1.9 -Ivendor/rubyexts/lib:vendor/erubis/lib:vendor/abstract/lib:vendor/cli/lib
 # encoding: utf-8
 
 require "rubyexts"
 
 module SimpleTemplater
   VERSION ||= "0.0.1"
-  cattr_accessor :logger
+  mattr_accessor :logger
 end
 
 acquire_relative "simple-templater/*.rb"

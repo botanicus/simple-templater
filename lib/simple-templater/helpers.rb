@@ -1,5 +1,5 @@
 require "rbconfig"
-require "rango/ext/platform"
+require "rubyexts/platform"
 
 module SimpleTemplater
   include RbConfig
