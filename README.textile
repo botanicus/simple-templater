@@ -1,0 +1,22 @@
+h1. About
+
+"SimpleTemplater":http://github.com/botanicus/simple-templater is simple solution for creating generators
+
+h1. Usage
+
+<pre>
+require "simple-templater"
+
+SimpleTemplater.config do
+	self.name = "rango"
+	self.logger = Rango.logger
+end
+
+SimpleTemplater::Generator.new("project")
+</pre>
+
+h2. Metadata
+
+h2. Templates
+
+h2. Hooks
