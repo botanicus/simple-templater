@@ -4,6 +4,8 @@ h1. About
 
 h1. Usage
 
+h2. API
+
 <pre>
 require "simple-templater"
 
@@ -20,3 +22,22 @@ h2. Metadata
 h2. Templates
 
 h2. Hooks
+
+h1. Custom Generators
+
+Each user can create its own generators and put them to @~/.#{project_name}/stubs/#{generator_name}@. For example project generators for Rango should be placed to ~/.rango/stubs/project
+
+h2. Plugins
+
+You often may want to
+
+In Rango:
+<pre>
+SimpleTemplater::Discovery.discover!(:rango)
+</pre>
+
+<pre>
+SimpleTemplater.scope(:rango) do
+	register File.dirname(__FILE__)
+end
+</pre>

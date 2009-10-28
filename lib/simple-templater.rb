@@ -6,6 +6,8 @@ require "rubyexts"
 module SimpleTemplater
   VERSION ||= "0.0.1"
   mattr_accessor :logger
+
+  GeneratorNotFound ||= Class.new(StandardError)
 end
 
 acquire_relative "simple-templater/*.rb"
