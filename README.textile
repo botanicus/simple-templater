@@ -1,6 +1,6 @@
 h1. About
 
-"SimpleTemplater":http://github.com/botanicus/simple-templater is simple solution for creating generators
+"SimpleTemplater":http://github.com/botanicus/simple-templater is dead-simple solution for creating generators. It strongly uses convention over configuration, so you don't have to write loads of code to generate one stupid plain text README.
 
 h1. Usage
 
@@ -9,25 +9,60 @@ h2. API
 <pre>
 require "simple-templater"
 
-SimpleTemplater::Project.new do
-	self.name = "rango"
-	self.logger = Rango.logger
-end
-
-SimpleTemplater::Generator.new("project")
+templater = SimpleTemplater::Main.new(:rango, Rango.logger)
+templater.discovery! if defined?(Gem) # try to find generators installed as gems
+templater.run(ARGV.shift) # run generator from ARGV, for example "project"
 </pre>
 
-h2. Metadata
+h2. File Hierarchy
+
+- @stubs/#{generator_name}/preprocess@
+- @stubs/#{generator_name}/postprocess@
+- @stubs/#{generator_name}/content@
 
 h2. Templates
 
+Every file in @stubs/#{generator_name}/content@ will be proceed:
+
+- *Files which doesn't require ERB proceeding* are simply copy from @stubs/#{generator_name}/content/file.txt@ to @#{project_name}/file.txt@
+- *Files with .rbt extension and ERB tags inside* will be proceed by Erubis and the result without @.rbt@ extension will be written to @stubs/#{generator_name}/content/app/models/post.rb@ to @#{project_name}/app/models/post.rb@. 
+- If you want to generate file with @rbt@ extension, just put append another .rbt: @file.txt.rbt.rbt@ => @#{project_name}/file.txt.rbt@. The template will be proceed by Erubis. If you want to get @<%= %>@ on the output, just use @<%%= %>@.
+
 h2. Hooks
+
+h2. Preprocessing
+
+h3. ARGV Parsing
+
+- First argument will typically be name of the generator (unless you provide just one generator and the name is hardcoded)
+- @--no-orm@ {orm: false|true}
+- @--orm=datamapper@ {orm: "datamapper"}
+- @--models=post,comment@ {models: ["post", "comment"]}
+- options = ARGV.parse!
+- For testing you may use the @parse!@ method after @YourArray.extend(ArgvParsingMixin)@
+
+h3. User Interaction
+
+- Do you want to
+- @--github@ or @--no-github@
+
+@your-gen project --models=post,comment --controller=posts --orm=datamapper@
+
+- the script don't have to be Ruby, but it will be easier for you since SimpleTemplater provides some basic ARGV parsing for you
+- the script have to be executable
+
+h2. Postprocessing
+
+h3. Examples
+
+- initialize Git repository
+- create Git repository on GitHub and push 
 
 h1. Custom Generators
 
-Each user can create its own generators and put them to @~/.#{project_name}/stubs/#{generator_name}@. For example project generators for Rango should be placed to ~/.rango/stubs/project
+Each user can create its own generators and put them to @~/.#{project_name}/stubs/#{generator_name}@. For example project generators for Rango should be placed to @~/.rango/stubs/project@
 
-h2. Plugins
+h2. Generators Registration in Plugins
 
 You often may want to
 
@@ -37,7 +72,18 @@ SimpleTemplater::Discovery.discover!(:rango)
 </pre>
 
 <pre>
-SimpleTemplater.scope(:rango) do
-	register File.dirname(__FILE__)
+SimpleTemplater.register(:rango) # register relative path to stubs/*
+</pre>
+
+or
+
+<pre>
+SimpleTemplater.register(:rango) do
+	# do some initialization
 end
 </pre>
+
+h2. Diff Generators
+
+- rewrite some default files
+- hooks

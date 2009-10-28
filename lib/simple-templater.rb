@@ -43,7 +43,10 @@ module SimpleTemplater
     @scopes[scope] << block
   end
 
-  def self.register(name, path)
+  def self.register(generator)
+    raise GeneratorNotFound unless File.directory?(path) # TODO: validations of directory content
+    @scopes[scope] ||= Array.new
+    @scopes[scope].push(generator)
   end
 
   # Searches installed gems for Generators files and loads all code blocks in them that match
@@ -61,6 +64,7 @@ module SimpleTemplater
   
   protected
   def find_latest_gem_paths
+    require "rubygems" unless defined?(Gem)
     # Minigems provides a simpler (and much faster) method for finding the
     # latest gems.
     if Gem.respond_to?(:latest_gem_paths)
@@ -72,7 +76,7 @@ module SimpleTemplater
         latest_gems[gem.name] = gem if currently_latest.nil? or gem.version > currently_latest.version
         latest_gems
       end
-      gems.values.map {|gem| gem.full_gem_path}
+      gems.values.map { |gem| gem.full_gem_path }
     end
   end
 

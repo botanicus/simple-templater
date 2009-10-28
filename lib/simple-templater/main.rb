@@ -21,8 +21,7 @@ module SimpleTemplater
 
     # templater.register(:project, path)
     def register(name, path)
-      raise GeneratorNotFound unless File.directory?(path) # TODO: validations of directory content
-      @generators[name] = path
+      SimpleTemplater.register(scope, Generator.new(name, path))
     end
     
     private

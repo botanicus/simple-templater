@@ -2,6 +2,11 @@ require_relative "spec_helper"
 require "simple-templater"
 
 describe SimpleTemplater do
+  before(:each) do
+    Gem.path.clear
+    Gem.path.push(File.join(SPEC_ROOT, "stubs", "gems"))
+  end
+
   describe "constants" do
     it "should provide VERSION string" do
       SimpleTemplater::VERSION.should match(/^\d+\.\d+\.\d+$/)
@@ -17,16 +22,20 @@ describe SimpleTemplater do
       end
     end
     
-    describe ".scope" do
+    describe ".scope(scope, &block)" do
       # TODO
     end
     
-    describe ".register" do
+    describe ".register(name, path)" do
       # TODO
     end
     
-    describe ".discover!" do
-      # TODO
+    describe ".discover!(scope)" do
+      it "should go through all the gems and find the generators" do
+        SimpleTemplater.generators.should be_empty
+        SimpleTemplater.discover!(:test_generator)
+        SimpleTemplater.generators.should_not be_empty
+      end
     end
   end
 end

@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.version = SimpleTemplater::VERSION
   s.authors = ["Jakub Šťastný aka Botanicus"]
   s.homepage = "http://github.com/botanicus/simple-templater"
-  s.summary = "Rango is ultralightweight, ultracustomizable, ultracool web framework deeply inspired by Django."
-  s.description = "" # TODO: long description
+  s.summary = "SimpleTemplater is dead-simple solution for creating generators."
+  s.description = "SimpleTemplater is dead-simple solution for creating generators. It strongly uses convention over configuration, so you don't have to write loads of code to generate one stupid plain text README."
   s.cert_chain = nil
   s.email = ["knava.bestvinensis", "gmail.com"].join("@")
   s.has_rdoc = true
