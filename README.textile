@@ -24,24 +24,25 @@ h2. Templates
 
 Every file in @stubs/#{generator_name}/content@ will be proceed:
 
-- *Files which doesn't require ERB proceeding* are simply copy from @stubs/#{generator_name}/content/file.txt@ to @#{project_name}/file.txt@
+- *Files which doesn't require ERB processing* are simply copy from @stubs/#{generator_name}/content/file.txt@ to @#{project_name}/file.txt@
 - *Files with .rbt extension and ERB tags inside* will be proceed by Erubis and the result without @.rbt@ extension will be written to @stubs/#{generator_name}/content/app/models/post.rb@ to @#{project_name}/app/models/post.rb@. 
 - If you want to generate file with @rbt@ extension, just put append another .rbt: @file.txt.rbt.rbt@ => @#{project_name}/file.txt.rbt@. The template will be proceed by Erubis. If you want to get @<%= %>@ on the output, just use @<%%= %>@.
 
 h2. Hooks
 
-h2. Preprocessing
+h3. Preprocessing
 
-h3. ARGV Parsing
+h4. ARGV Parsing
 
 - First argument will typically be name of the generator (unless you provide just one generator and the name is hardcoded)
-- @--no-orm@ {orm: false|true}
-- @--orm=datamapper@ {orm: "datamapper"}
-- @--models=post,comment@ {models: ["post", "comment"]}
-- options = ARGV.parse!
+- @--orm@ to @{orm: true}@
+- @--no-orm@ to @{orm: false}@
+- @--orm=datamapper@ to @{orm: "datamapper"}@
+- @--models=post,comment@ to @{models: ["post", "comment"]}@
+- @options = ARGV.parse!@
 - For testing you may use the @parse!@ method after @YourArray.extend(ArgvParsingMixin)@
 
-h3. User Interaction
+h4. User Interaction
 
 - Do you want to
 - @--github@ or @--no-github@
@@ -67,6 +68,7 @@ h2. Generators Registration in Plugins
 You often may want to
 
 In Rango:
+
 <pre>
 SimpleTemplater::Discovery.discover!(:rango)
 </pre>
@@ -79,7 +81,7 @@ or
 
 <pre>
 SimpleTemplater.register(:rango) do
-	# do some initialization
+  # do some initialization
 end
 </pre>
 
