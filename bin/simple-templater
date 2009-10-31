@@ -1,0 +1,6 @@
+# --list (scope): list all generators available for given scope or just list all generators
+# --scopes: list all available scopes
+# --help
+
+# simple-templater [scope] [generator] [options] [arguments]
+# simple-templater rango project my_blog --orm=datamapper
