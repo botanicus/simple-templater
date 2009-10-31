@@ -10,11 +10,11 @@ module SimpleTemplater
         when /^--([^=]+)$/    # --git-repository
           options[$1.gsub("-", "_").to_sym] = true
         when /^--([^=]+)=([^,]+)$/ # --controller=post
-          p [$1, $2, $&]
-          options[$1.gsub("-", "_").to_sym] = $2.dup
+          key, value = $1, $2
+          options[key.gsub("-", "_").to_sym] = value.dup
         when /^--([^=]+)=(.+)$/    # --controllers=posts,comments
-          p [$1, $2, $&]
-          options[$1.gsub("-", "_").to_sym] = $2.split(",")
+          key, value = $1, $2
+          options[key.gsub("-", "_").to_sym] = value.split(",")
         else
           raise "Parsing failed on: #{argument}"
         end

@@ -31,7 +31,7 @@ describe SimpleTemplater::ArgvParsingMixin do
     
     it "should parse --models=post,comment to {models: ['post', 'comment']}" do
       options = parse("--models=post,comment")
-      options[:model].should eql(["post", "comment"])
+      options[:models].should eql(["post", "comment"])
     end
   end
 end
