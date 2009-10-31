@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby1.9 -Ivendor/rubyexts/lib:vendor/erubis/lib:vendor/abstract/lib:vendor/cli/lib
+#!/usr/bin/env ruby -Ivendor/rubyexts/lib:vendor/erubis/lib:vendor/abstract/lib:vendor/cli/lib
 # encoding: utf-8
 
 require "rubyexts"
