@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module SimpleTemplater
   class Main
     attr_reader :scope, :logger, :generators
