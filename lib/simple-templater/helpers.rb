@@ -5,7 +5,6 @@ require "rubyexts/platform"
 
 module SimpleTemplater
   module Helpers
-    include RbConfig
     extend self
 
     def shebang(executable = rubypath, *args)
@@ -25,11 +24,11 @@ module SimpleTemplater
     end
 
     def rubypath
-      File.join(CONFIG["bindir"], self.ruby_basename)
+      File.join(RbConfig::CONFIG["bindir"], self.ruby_basename)
     end
 
     def ruby_basename
-      CONFIG["RUBY_INSTALL_NAME"]
+      RbConfig::CONFIG["RUBY_INSTALL_NAME"]
     end
   end
 end
