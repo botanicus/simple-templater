@@ -10,7 +10,12 @@ h2. API
 require "simple-templater"
 
 templater = SimpleTemplater::Main.new(:rango, Rango.logger)
-templater.discovery! if defined?(Gem) # try to find generators installed as gems
+if defined?(Gem) # try to find generators installed as gems
+  templater.discovery!
+else
+  Rango.logger.warn "Running without RubyGems which means SimpleTemplater won't be able to find generators distributed as a Gems."
+  # register generators just for rango
+end
 templater.run(ARGV.shift) # run generator from ARGV, for example "project"
 </pre>
 
