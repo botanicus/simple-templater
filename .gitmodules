@@ -10,3 +10,6 @@
 [submodule "vendor/erubis"]
 	path = vendor/erubis
 	url = git://github.com/genki/erubis.git
+[submodule "vendor/fakefs"]
+	path = vendor/fakefs
+	url = git://github.com/defunkt/fakefs.git
