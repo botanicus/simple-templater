@@ -15,6 +15,7 @@ if defined?(Gem) # try to find generators installed as gems
 else
   Rango.logger.warn "Running without RubyGems which means SimpleTemplater won't be able to find generators distributed as a Gems."
   # register generators just for rango
+  load File.join(File.dirname(__FILE__), "..", "simple-templater.scope")
 end
 templater.run(ARGV.shift) # run generator from ARGV, for example "project"
 </pre>
