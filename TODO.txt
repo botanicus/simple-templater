@@ -1,1 +1,7 @@
+- ARGV parsing[1]
 - release tasks
+
+[1] Templater:
+  first_argument :name, :required => true, :desc => "Pupu name"
+  second_argument :files, :as => :array, :default => nil, :desc => "Extra files. Example: foo.js foo.css"
+  option :js_framework, :default => :mootools, :desc => "Use given JS framework for new pupu. Choices: mootools, jquery, prototype."

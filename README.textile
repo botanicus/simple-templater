@@ -95,3 +95,9 @@ h2. Diff Generators
 
 - rewrite some default files
 - hooks
+
+h1. Links
+
+- "Wiki":http://wiki.github.com/botanicus/simple-templater
+- "Source Code":http://github.com/botanicus/simple-templater
+- "API Documentation":http://rdoc.info/projects/botanicus/simple-templater
