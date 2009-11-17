@@ -18,7 +18,7 @@ module SimpleTemplater
     end
     
     def generators
-      SimpleTemplater.scopes[self.scope]
+      SimpleTemplater.scopes[self.scope] || Hash.new
     end
 
     # templater.register(:project, path)

@@ -34,10 +34,7 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 module SimpleTemplater
   class Generator
-    def self.rango_root
-      File.expand_path(File.join(File.dirname(__FILE__), "..", "..", ".."))
-    end
-
+    # TODO
     def self.stubs_dirs
       ["#{os.home}/.rango/stubs", "#{self.rango_root}/stubs"]
     end
@@ -52,8 +49,9 @@ module SimpleTemplater
       return output
     end
 
-    def initialize(type, name, *args)
-      @type, @name, @args = type, name, args
+    def initialize(name, path, *args)
+      raise GeneratorNotFound unless File.directory?(path)
+      @name, @args = name, args
       if File.exist?(name)
         abort "#{name} already exist, aborting."
       end
@@ -61,7 +59,7 @@ module SimpleTemplater
 
     def stubs_dirs
       dirs = self.class.stubs_dirs.dup
-      dirs.map! { |dir| "#{dir}/#{@type}" }
+      dirs.map! { |dir| "#{dir}/#{self.config.type}" }
       dirs.find { |dir| Dir.exist?(dir) }
     end
 
@@ -77,7 +75,7 @@ module SimpleTemplater
     end
 
     def proceed
-      Rango.logger.info("Creating #{@type} #{@name} from stubs in #{@stubs_dir}")
+      Rango.logger.info("Creating #{self.config.type} #{@name} from stubs in #{@stubs_dir}")
       FileUtils.mkdir_p(@name)
       Dir.chdir(@name) do
         ARGV.clear.push(*[self.content_dir, @args].flatten.compact)

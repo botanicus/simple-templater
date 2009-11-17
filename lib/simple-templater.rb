@@ -32,6 +32,10 @@ module SimpleTemplater
   VERSION ||= "0.0.1"
   GeneratorNotFound ||= Class.new(StandardError)
 
+  def self.scopes
+    @scopes ||= Hash.new
+  end
+
   # Adds a block of code specific for a certain scope of generators, where the scope would
   # probably be the name of the program running the generator.
   #
@@ -43,8 +47,7 @@ module SimpleTemplater
     @scopes[scope] << block
   end
 
-  def self.register(generator)
-    raise GeneratorNotFound unless File.directory?(path) # TODO: validations of directory content
+  def self.register(scope, generator)
     @scopes[scope] ||= Array.new
     @scopes[scope].push(generator)
   end
@@ -54,7 +57,7 @@ module SimpleTemplater
   #
   # === Parameters
   # scope<String>:: The name of the scope to search for
-  def discover!(scope)
+  def self.discover!(scope)
     @scopes = {}
     generator_files.each do |file|
       load file
@@ -63,7 +66,7 @@ module SimpleTemplater
   end
   
   protected
-  def find_latest_gem_paths
+  def self.find_latest_gem_paths
     require "rubygems" unless defined?(Gem)
     # Minigems provides a simpler (and much faster) method for finding the
     # latest gems.
@@ -80,7 +83,7 @@ module SimpleTemplater
     end
   end
 
-  def generator_files
+  def self.generator_files
     find_latest_gem_paths.inject(Array.new) do |files, gem_path|
       path = ::File.join(gem_path, "simple-templater.scope")
       files << path if ::File.exists?(path) and not ::File.directory?(path)

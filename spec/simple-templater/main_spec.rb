@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require "logger"
 require_relative "../spec_helper"
 require "simple-templater/main"
 
@@ -27,7 +28,14 @@ describe SimpleTemplater::Main do
   end
   
   describe "#generators" do
+    it "should be empty hash if there are no generators" do
+      @templater.generators.should be_empty
+      @templater.generators.should be_kind_of(Hash)
+    end
+
     it "should be hash of {name: path}" do
+      pending "Add generators"
+      @templater.generators.should_not be_empty
       @templater.generators.each do |name, path|
         name.should be_kind_of(Symbol)
         File.directory?(path).should be_true
@@ -45,8 +53,7 @@ describe SimpleTemplater::Main do
     
     it "should push values to the generators hash if the path exists" do
       path = File.join(SPEC_ROOT, "stubs", "test_generator")
-      @templater.register(:test_generator, path)
-      @templater.generators[:test_generator].should eql(path)
+      -> { @templater.register(:test_generator, path) }.should change { @templater.generators.length }.by(1)
     end
   end
 end
