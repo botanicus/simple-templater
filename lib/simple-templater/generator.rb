@@ -70,6 +70,14 @@ module SimpleTemplater
       File.join(self.path, path)
     end
 
+    def full?
+      self.config.type.eql?("full")
+    end
+
+    def diff?
+      self.config.type.eql?("diff")
+    end
+
     # Metadata options
     # :type: full|diff
     # :file: flat.ru
