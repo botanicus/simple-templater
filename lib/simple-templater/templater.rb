@@ -61,8 +61,10 @@ module SimpleTemplater
         end
         File.open(file, "w") do |file|
           eruby = Erubis::Eruby.new(File.read(template))
+          context = Erubis::Context.new(@context)
+          context.extend(SimpleTemplater::Helpers)
           begin
-            output = eruby.evaluate(@context)
+            output = eruby.evaluate(context)
           rescue Exception => exception
             SimpleTemplater.logger.error("Exception occured in template #{template}: #{exception.message}")
           end
