@@ -36,6 +36,7 @@ require "rubyexts"
 module SimpleTemplater
   VERSION ||= "0.0.1"
   GeneratorNotFound ||= Class.new(StandardError)
+  TargetDirectoryAlreadyExist ||= Class.new(StandardError)
 
   def self.logger
     @@logger ||= begin

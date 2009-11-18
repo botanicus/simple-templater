@@ -29,24 +29,16 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 module SimpleTemplater
   class Generator
-    attr_reader :name, :path, :args
-
-    def initialize(name, path, *args)
+    attr_reader :name, :path
+    def initialize(name, path)
       raise GeneratorNotFound unless File.directory?(path)
-      @name, @path, @args = name.to_sym, path, args
-      if File.exist?(name)
-        abort "#{name} already exist, aborting."
-      end
+      @name, @path = name.to_sym, path
     end
 
-    def run(*argv)
-      @argv = argv
-      self.generators.each do |location|
-        self.proceed(location)
-      end
-    end
-
-    def proceed(location)
+    # @param location ... ./blog
+    # @param args Array --git-repository --no-github
+    def run(location, *args)
+      self.load_setup
       SimpleTemplater.logger.info("Creating #{self.config.type} #{self.name} from stubs in #{location}")
       FileUtils.mkdir_p(self.name)
       Dir.chdir(self.name) do
@@ -54,13 +46,19 @@ module SimpleTemplater
         if File.exist?(hook = File.join(@stubs_dir, "preprocess.rb"))
           load hook
         else
-          Rango::CLI::Templater.create(self.content_dir)
+          SimpleTemplater::Templater.create(self.content_dir)
         end
       end
-      self.run_init_hook
+      self.run_postprocess_hook
     end
 
-    def run_init_hook
+    def load_setup
+      if File.exist?(hook = file("preprocess.rb"))
+        load(hook) && SimpleTemplater.logger.inspect("Running preprocess.rb hook")
+      end
+    end
+
+    def run_postprocess_hook
       Dir.chdir(@name) do
         if File.exist?(hook = File.join(@stubs_dir, "postprocess.rb"))
           load(hook) && SimpleTemplater.logger.inspect("Running postprocess.rb hook")
@@ -68,8 +66,8 @@ module SimpleTemplater
       end
     end
 
-    def validations
-      ["diff", "full"].include?(self.config.type)
+    def file(path)
+      File.join(self.path, path)
     end
 
     # Metadata options
@@ -79,7 +77,7 @@ module SimpleTemplater
       metadata_file = File.join(@stubs_dir, "metadata.yml")
       YAML::load_file(metadata_file)
     rescue Errno::ENOENT
-      SimpleTemplater.logger.fatal("Rango expected '#{metadata_file}'")
+      SimpleTemplater.logger.fatal("SimpleTemplater expected '#{metadata_file}'")
     end
 
     def config

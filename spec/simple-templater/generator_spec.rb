@@ -6,7 +6,7 @@ require "simple-templater/generator"
 describe SimpleTemplater::Generator do
   before(:each) do
     @generator_dir = File.join(SPEC_ROOT, "stubs", "test_generator", "stubs", "test")
-    @generator = SimpleTemplater::Generator.new(:test, @generator_dir, "--git-repository")
+    @generator = SimpleTemplater::Generator.new(:test, @generator_dir)
   end
 
   describe "#initialize" do
@@ -25,10 +25,6 @@ describe SimpleTemplater::Generator do
 
     it "should raise an exception if path doesn't exist" do
       -> { SimpleTemplater::Generator.new(:test, "/i/do/not/exist") }.should raise_error(SimpleTemplater::GeneratorNotFound)
-    end
-
-    it "should set take all others attributes as args" do
-      @generator.args.should include("--git-repository")
     end
   end
 end
