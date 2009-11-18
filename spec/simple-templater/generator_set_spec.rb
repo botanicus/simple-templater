@@ -21,7 +21,7 @@ describe SimpleTemplater::GeneratorSet do
     end
 
     it "should raise an exception if path doesn't exist" do
-      -> { SimpleTemplater::GeneratorSet.new(:test, "/i/do/not/exist") }.should raise_error(Errno::ENOENT)
+      -> { SimpleTemplater::GeneratorSet.new(:test, "/i/do/not/exist") }.should raise_error(SimpleTemplater::GeneratorNotFound)
     end
 
     it "should set paths to empty array if no paths specified" do

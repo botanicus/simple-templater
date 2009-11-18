@@ -2,6 +2,7 @@
 
 require "cli"
 require_relative "generator"
+require_relative "../simple-templater"
 
 module SimpleTemplater
   # one project can has a generator in system gems and in ~/.rango/stubs/project,
@@ -36,7 +37,7 @@ module SimpleTemplater
     protected
     def check_paths(paths)
       paths.each do |path|
-        Dir.exist?(path) || raise(Errno::ENOENT, path)
+        Dir.exist?(path) || raise(GeneratorNotFound, path)
       end
       return paths
     end

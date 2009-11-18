@@ -47,11 +47,11 @@ describe SimpleTemplater::Main do
 
   describe "#find(name)" do
     it "should return generator with responding name" do
-      @templater.find(:test).should be_kind_of(SimpleTemplater::Generator)
+      @templater.find(:test).should be_kind_of(SimpleTemplater::GeneratorSet)
     end
 
     it "should work with a string as well" do
-      @templater.find("test").should be_kind_of(SimpleTemplater::Generator)
+      @templater.find("test").should be_kind_of(SimpleTemplater::GeneratorSet)
     end
   end
 end

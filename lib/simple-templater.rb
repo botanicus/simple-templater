@@ -54,7 +54,7 @@ module SimpleTemplater
   end
 
   # scope => generator
-  # rango: Generator.new(:project, path)
+  # rango: GeneratorSet.new(:project, *paths)
   def self.generators
     @generators ||= Hash.new
   end
@@ -70,9 +70,9 @@ module SimpleTemplater
     self.scopes[scope] << block
   end
 
-  def self.register(scope, name, path)
+  def self.register(scope, name, *paths)
     self.generators[scope] ||= Array.new
-    self.generators[scope].push(Generator.new(name, path))
+    self.generators[scope].push(GeneratorSet.new(name, *paths))
   end
 
   # Searches installed gems for simple-templater.scope files and loads all code blocks in them that match
