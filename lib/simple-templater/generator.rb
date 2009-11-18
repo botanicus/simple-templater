@@ -62,7 +62,8 @@ module SimpleTemplater
       "#{@stubs_dir}/content"
     end
 
-    def create
+    def run(*argv)
+      @argv = argv
       self.stubs_dirs.each do |stubs_dir|
         @stubs_dir = stubs_dir
         self.proceed
