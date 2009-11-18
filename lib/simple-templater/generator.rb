@@ -43,7 +43,7 @@ module SimpleTemplater
       FileUtils.mkdir_p(self.name)
       Dir.chdir(self.name) do
         ARGV.clear.push(*[self.content_dir(location), @args].flatten.compact)
-        if File.exist?(hook = File.join(@stubs_dir, "preprocess.rb"))
+        if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           load hook
         else
           SimpleTemplater::Templater.create(self.content_dir)
@@ -60,7 +60,7 @@ module SimpleTemplater
 
     def run_postprocess_hook
       Dir.chdir(@name) do
-        if File.exist?(hook = File.join(@stubs_dir, "postprocess.rb"))
+        if File.exist?(hook = File.join(self.path, "postprocess.rb"))
           load(hook) && SimpleTemplater.logger.inspect("Running postprocess.rb hook")
         end
       end
@@ -82,7 +82,7 @@ module SimpleTemplater
     # :type: full|diff
     # :file: flat.ru
     def metadata
-      metadata_file = File.join(@stubs_dir, "metadata.yml")
+      metadata_file = File.join(self.path, "metadata.yml")
       YAML::load_file(metadata_file)
     rescue Errno::ENOENT
       SimpleTemplater.logger.fatal("SimpleTemplater expected '#{metadata_file}'")
