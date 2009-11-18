@@ -46,9 +46,8 @@ module SimpleTemplater
         ARGV.clear.push(*[file("content"), args].flatten.compact)
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           load hook
-        else
-          SimpleTemplater::Templater.create(self.content_dir)
         end
+        SimpleTemplater::Templater.create(@target)
       end
       self.run_postprocess_hook
     end
