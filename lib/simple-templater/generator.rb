@@ -4,6 +4,7 @@ require "yaml"
 require "ostruct"
 require "fileutils"
 
+require_relative "../simple-templater"
 require_relative "main"
 
 # yes? etc
@@ -28,7 +29,7 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 module SimpleTemplater
   class Generator
-    attr_reader :name, :path
+    attr_reader :name, :path, :args
 
     def initialize(name, path, *args)
       raise GeneratorNotFound unless File.directory?(path)
