@@ -17,7 +17,7 @@ describe SimpleTemplater::Hooks::Hook do
     end
 
     it "should find hook with :test key" do
-      hook = Hook.find(:test).new(Array.new)
+      hook = Hook.find(:test).new
       hook.should respond_to(:run)
       hook.should respond_to(:question)
     end
@@ -25,7 +25,7 @@ describe SimpleTemplater::Hooks::Hook do
 
   describe "instance methods" do
     before(:each) do
-      @hook = Hook.find(:test).new(Array.new)
+      @hook = Hook.find(:test).new
     end
 
     describe "#key" do
