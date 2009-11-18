@@ -13,7 +13,7 @@ describe SimpleTemplater::Hooks::GitRepository do
   after(:each) do
     FileUtils.rm_r(@repo)
   end
-  
+
   it "should create .git directory" do
     Dir.mkdir(@repo) # we are using fakefs so we don't have to remove it
     Dir.chdir(@repo) do

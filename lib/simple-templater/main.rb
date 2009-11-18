@@ -7,7 +7,7 @@ module SimpleTemplater
       @scope      = scope
       @generators = Hash.new
     end
-    
+
     def logger
       @logger ||= standard_logger
     end
@@ -15,7 +15,7 @@ module SimpleTemplater
     def discover!
       SimpleTemplater.discover!(self.scope)
     end
-    
+
     def generators
       SimpleTemplater.generators[self.scope] || Hash.new
     end
@@ -23,6 +23,12 @@ module SimpleTemplater
     # templater.register(:project, path)
     def register(name, path)
       SimpleTemplater.register(scope, Generator.new(name, path))
+    end
+
+    def find(name)
+      self.generators.find do |generator|
+        generator.name == name
+      end
     end
   end
 end

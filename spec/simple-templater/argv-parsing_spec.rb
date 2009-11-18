@@ -28,7 +28,7 @@ describe SimpleTemplater::ArgvParsingMixin do
       options = parse("--controller=posts")
       options[:controller].should eql("posts")
     end
-    
+
     it "should parse --models=post,comment to {models: ['post', 'comment']}" do
       options = parse("--models=post,comment")
       options[:models].should eql(["post", "comment"])

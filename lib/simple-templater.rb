@@ -51,7 +51,7 @@ module SimpleTemplater
   def self.scopes
     @scopes ||= Hash.new
   end
-  
+
   def self.generators
     @generators ||= Hash.new
   end
@@ -90,7 +90,7 @@ module SimpleTemplater
       end
     end
   end
-  
+
   protected
   def self.find_latest_gem_paths
     require "rubygems" unless defined?(Gem)

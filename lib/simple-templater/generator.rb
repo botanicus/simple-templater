@@ -28,6 +28,7 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 module SimpleTemplater
   class Generator
+    attr_reader :name
     # TODO
     def self.stubs_dirs
       ["#{os.home}/.rango/stubs", "#{self.rango_root}/stubs"]

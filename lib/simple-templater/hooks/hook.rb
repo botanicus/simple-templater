@@ -28,7 +28,7 @@ module SimpleTemplater
       def self.find(key)
         @@hooks.find { |hook| hook.name.split("::").last.snake_case.to_sym == key }
       end
-      
+
       def self.inherited(klass)
         @@hooks.push(klass)
       end
