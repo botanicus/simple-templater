@@ -36,12 +36,12 @@ describe SimpleTemplater::Main do
   
   describe "#register(name, path)" do
     it "should raise GeneratorNotFound if path doesn't exist" do
-      -> { @templater.register(:test_generator, "/a/b/c/d/whatever") }.should raise_error(SimpleTemplater::GeneratorNotFound)
+      -> { @templater.register(:test, "/a/b/c/d/whatever") }.should raise_error(SimpleTemplater::GeneratorNotFound)
     end
     
     it "should push values to the generators hash if the path exists" do
-      path = File.join(SPEC_ROOT, "stubs", "test_generator")
-      -> { @templater.register(:test_generator, path) }.should change { @templater.generators.length }.by(1)
+      path = File.join(SPEC_ROOT, "stubs", "test_generator", "stubs", "test")
+      -> { @templater.register(:test, path) }.should change { @templater.generators.length }.by(1)
     end
   end
 end
