@@ -36,6 +36,8 @@ Every file in @stubs/#{generator_name}/content@ will be proceed:
 
 h2. Hooks
 
+Each item in ARGV starting with @--@ is processed by a hook. Hooks can be distributed
+
 h3. Preprocessing
 
 h4. ARGV Parsing
