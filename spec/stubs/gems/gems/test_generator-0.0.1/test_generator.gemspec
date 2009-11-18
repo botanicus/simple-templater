@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.authors = ["Jakub Šťastný aka Botanicus"]
   s.homepage = "http://github.com/botanicus/simple-templater"
   s.summary = "Just a stub for SimpleTemplater"
-  s.description = "" # TODO: long description
   s.cert_chain = nil
   s.email = ["knava.bestvinensis", "gmail.com"].join("@")
   s.has_rdoc = true

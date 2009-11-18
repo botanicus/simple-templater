@@ -23,6 +23,38 @@ describe SimpleTemplater::Hooks::Hook do
     end
   end
 
+  describe ".invoke" do
+    describe "with ARGV" do
+      it "should return true if" do
+        ARGV.clear.push("--git-repository")
+        Test.invoke.should be_true
+      end
+
+      it "should return false if" do
+        ARGV.clear.push("--no-git-repository")
+        Test.invoke.should be_false
+      end
+    end
+
+    describe "without ARGV" do
+      it "should print question with suggestions how user can respond" do
+        pending "How can I test if it ask for y/n?"
+        ARGV.clear
+        Test.invoke
+      end
+
+      it "should take y as true" do
+        pending "How can I test if it ask for y/n?"
+        Test.invoke.should be_false
+      end
+
+      it "should take n as false" do
+        pending "How can I test if it ask for y/n?"
+        Test.invoke.should be_false
+      end
+    end
+  end
+
   describe "instance methods" do
     before(:each) do
       @hook = Hook.find(:test).new

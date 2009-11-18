@@ -13,7 +13,7 @@ module SimpleTemplater::Hooks
 
     def run
       if identificator(:github).yes?("Do you want to create #{@generator.project_name} on GitHub?")
-        #
+        # TODO: coming in version 0.2
       end
     end
   end

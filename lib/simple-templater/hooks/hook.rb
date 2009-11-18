@@ -34,18 +34,9 @@ module SimpleTemplater
         @@hooks.push(klass)
       end
 
-      def initialize
-      end
-
       def self.invoke
         hook = self.new
         hook.run if hook.required_from_argv || hook.question
-      end
-
-      def required_from_argv
-        ARGV.extend(SimpleTemplater::ArgvParsingMixin)
-        options = ARGV.parse!
-        options[key]
       end
 
       def key
@@ -58,6 +49,13 @@ module SimpleTemplater
 
       def run
         raise NotImplementedError, "Hook #{self.key} have to have implemented method #run"
+      end
+
+      protected
+      def required_from_argv
+        ARGV.extend(SimpleTemplater::ArgvParsingMixin)
+        options = ARGV.parse!
+        options[key]
       end
     end
   end

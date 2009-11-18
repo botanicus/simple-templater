@@ -1,9 +1,9 @@
-- refactoring, specs
-- see all the TODOs
+- refactoring & renaming
+- wiki & README
+- specs
 - YARD Code Documentation
 - Tweet about it
 
-- ARGV parsing[1]
 - release tasks (GemCutter)
 - hooks: required, description, default
 - metadata :file option for rendering just one file
