@@ -1,11 +1,12 @@
 # encoding: utf-8
 
+require "rubygems"
 require_relative "spec_helper"
 require "simple-templater"
 
 describe SimpleTemplater do
   before(:each) do
-    Gem.path.clear
+    Gem.clear_paths
     Gem.path.push(File.join(SPEC_ROOT, "stubs", "gems"))
   end
 
@@ -19,7 +20,7 @@ describe SimpleTemplater do
         SimpleTemplater.constants.should include(:GeneratorNotFound)
       end
       
-      it "should be exception class" do
+      it "should be an exception class" do
         lambda { raise SimpleTemplater::GeneratorNotFound }.should_not raise_error(TypeError)
       end
     end
@@ -34,10 +35,9 @@ describe SimpleTemplater do
     
     describe ".discover!(scope)" do
       it "should go through all the gems and find the generators" do
-        pending "Make SimpleTemplater.discover! working"
         SimpleTemplater.scopes.clear
-        SimpleTemplater.discover!(:test_generator)
-        SimpleTemplater.scopes.should_not be_empty
+        SimpleTemplater.discover!(:test)
+        SimpleTemplater.scopes.should have_key(:test)
       end
     end
 

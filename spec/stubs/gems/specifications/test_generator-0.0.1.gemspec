@@ -5,12 +5,12 @@ Gem::Specification.new do |s|
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Jakub \305\240\305\245astn\303\275 aka Botanicus"]
+  s.authors = ["Jakub Šťastný aka Botanicus"]
   s.cert_chain = nil
-  s.date = %q{2009-10-28}
+  s.date = %q{2009-11-18}
   s.description = %q{}
   s.email = %q{knava.bestvinensis@gmail.com}
-  s.files = ["simple-templater.gemspec", "simple-templater.scope", "stubs/content/%name%1_test.rb.rbt", "stubs/content/%name%_test.rb", "stubs/content/README.textile", "stubs/content/script.rb.rbt"]
+  s.files = ["simple-templater.scope", "stubs/test/content/%name%1_test.rb.rbt", "stubs/test/content/%name%_test.rb", "stubs/test/content/README.textile", "stubs/test/content/script.rb.rbt", "test_generator-0.0.1.gem", "test_generator.gemspec"]
   s.homepage = %q{http://github.com/botanicus/simple-templater}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}

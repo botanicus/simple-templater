@@ -3,3 +3,4 @@
 - hooks: required, description, default
 - metadata :file option for rendering just one file
 - !!! @models.each |model| => create models/%model%.rb
+- Rip support
