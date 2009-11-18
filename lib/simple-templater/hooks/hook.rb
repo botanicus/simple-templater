@@ -2,6 +2,7 @@
 
 require "rubyexts/string" # String#snake_case
 require "rubyexts/class"
+require "simple-templater/argv-parsing"
 
 # When generator runs:
 # ARGV.extend(ArgvParsingMixin)
@@ -33,7 +34,18 @@ module SimpleTemplater
         @@hooks.push(klass)
       end
 
-      def initialize(argv)
+      def initialize
+      end
+
+      def self.invoke
+        hook = self.new
+        hook.run if hook.required_from_argv || hook.question
+      end
+
+      def required_from_argv
+        ARGV.extend(SimpleTemplater::ArgvParsingMixin)
+        options = ARGV.parse!
+        options[key]
       end
 
       def key
