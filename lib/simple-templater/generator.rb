@@ -42,7 +42,7 @@ module SimpleTemplater
       SimpleTemplater.logger.info("Creating #{self.config.type} #{self.name} from stubs in #{location}")
       FileUtils.mkdir_p(self.name)
       Dir.chdir(self.name) do
-        ARGV.clear.push(*[self.content_dir(location), @args].flatten.compact)
+        ARGV.clear.push(*[file("content"), args].flatten.compact)
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           load hook
         else
