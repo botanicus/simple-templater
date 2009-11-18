@@ -39,9 +39,9 @@ module SimpleTemplater
     # @param args Array --git-repository --no-github
     def run(location, *args)
       self.load_setup
-      SimpleTemplater.logger.info("Creating #{self.config.type} #{self.name} from stubs in #{location}")
-      FileUtils.mkdir_p(self.name)
-      Dir.chdir(self.name) do
+      SimpleTemplater.logger.info("[#{self.name} generator] Creating #{location} (#{self.config.type})")
+      FileUtils.mkdir_p(location)
+      Dir.chdir(location) do
         ARGV.clear.push(*[file("content"), args].flatten.compact)
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           load hook
@@ -54,14 +54,14 @@ module SimpleTemplater
 
     def load_setup
       if File.exist?(hook = file("preprocess.rb"))
-        load(hook) && SimpleTemplater.logger.inspect("Running preprocess.rb hook")
+        load(hook) && SimpleTemplater.logger.info("Running preprocess.rb hook")
       end
     end
 
     def run_postprocess_hook
       Dir.chdir(@name) do
         if File.exist?(hook = File.join(self.path, "postprocess.rb"))
-          load(hook) && SimpleTemplater.logger.inspect("Running postprocess.rb hook")
+          load(hook) && SimpleTemplater.logger.info("Running postprocess.rb hook")
         end
       end
     end
