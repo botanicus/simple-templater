@@ -28,53 +28,28 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 module SimpleTemplater
   class Generator
-    attr_reader :name
-    # TODO
-    def self.stubs_dirs
-      [self.path, "#{os.home}/.#{name}/stubs"]
-    end
-
-    def self.list
-      output = Hash.new
-      self.stubs_dirs.each do |directory|
-        files = map { |directory| Dir["#{directory}/*"] }.flatten
-        directories = files.select { |file| Dir.exist?(file) }
-        output[directory] = directories
-      end
-      return output
-    end
+    attr_reader :name, :path
 
     def initialize(name, path, *args)
       raise GeneratorNotFound unless File.directory?(path)
-      @name, @args = name.to_sym, args
+      @name, @path, @args = name.to_sym, path, args
       if File.exist?(name)
         abort "#{name} already exist, aborting."
       end
     end
 
-    def stubs_dirs
-      dirs = self.class.stubs_dirs.dup
-      dirs.map! { |dir| "#{dir}/#{self.config.type}" }
-      dirs.find { |dir| Dir.exist?(dir) }
-    end
-
-    def content_dir
-      "#{@stubs_dir}/content"
-    end
-
     def run(*argv)
       @argv = argv
-      self.stubs_dirs.each do |stubs_dir|
-        @stubs_dir = stubs_dir
-        self.proceed
+      self.generators.each do |location|
+        self.proceed(location)
       end
     end
 
-    def proceed
-      SimpleTemplater.logger.info("Creating #{self.config.type} #{@name} from stubs in #{@stubs_dir}")
-      FileUtils.mkdir_p(@name)
-      Dir.chdir(@name) do
-        ARGV.clear.push(*[self.content_dir, @args].flatten.compact)
+    def proceed(location)
+      SimpleTemplater.logger.info("Creating #{self.config.type} #{self.name} from stubs in #{location}")
+      FileUtils.mkdir_p(self.name)
+      Dir.chdir(self.name) do
+        ARGV.clear.push(*[self.content_dir(location), @args].flatten.compact)
         if File.exist?(hook = File.join(@stubs_dir, "preprocess.rb"))
           load hook
         else
