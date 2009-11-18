@@ -49,5 +49,9 @@ describe SimpleTemplater::Main do
     it "should return generator with responding name" do
       @templater.find(:test).should be_kind_of(SimpleTemplater::Generator)
     end
+
+    it "should work with a string as well" do
+      @templater.find("test").should be_kind_of(SimpleTemplater::Generator)
+    end
   end
 end

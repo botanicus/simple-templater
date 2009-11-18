@@ -22,12 +22,12 @@ module SimpleTemplater
 
     # templater.register(:project, path)
     def register(name, path)
-      SimpleTemplater.register(scope, Generator.new(name, path))
+      SimpleTemplater.register(self.scope, name, path)
     end
 
     def find(name)
       self.generators.find do |generator|
-        generator.name == name
+        generator.name == name.to_sym
       end
     end
   end
