@@ -1,4 +1,5 @@
 # --list (scope): list all generators available for given scope or just list all generators
+# -i | --interactive run IRB with loaded simple templater
 # --scopes: list all available scopes
 # --help
 

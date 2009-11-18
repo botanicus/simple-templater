@@ -9,7 +9,6 @@ Dir[File.join(File.dirname(__FILE__), "vendor", "*")].each do |path|
   end
 end
 
-# Run thor package:gem or gem build simple-templater.gemspec
 # NOTE: we can't use require_relative because when we run gem build, it use eval for executing this file
 require File.join(File.dirname(__FILE__), "lib", "simple-templater")
 
@@ -34,6 +33,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ::Gem::Requirement.new(">= 1.9.1")
 
   # runtime dependencies
+  s.add_dependency "cli"
   s.add_dependency "rubyexts"
 
   # development dependencies
@@ -41,5 +41,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "erubis" # for generators
 
   # RubyForge
-  # s.rubyforge_project = "simple-templater"
+  s.rubyforge_project = "simple-templater"
 end
