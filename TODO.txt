@@ -1,5 +1,4 @@
 - refactoring, specs
-- do we need: rubyexts
 - see all the TODOs
 - YARD Code Documentation
 - Tweet about it

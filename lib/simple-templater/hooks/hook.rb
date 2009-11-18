@@ -2,7 +2,7 @@
 
 require "rubyexts/string" # String#snake_case
 require "rubyexts/class"
-require "simple-templater/argv-parsing"
+require "simple-templater/argv_parsing"
 
 # When generator runs:
 # ARGV.extend(ArgvParsingMixin)

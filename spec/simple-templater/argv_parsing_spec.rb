@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require_relative "../spec_helper"
-require "simple-templater/argv-parsing"
+require "simple-templater/argv_parsing"
 
 describe SimpleTemplater::ArgvParsingMixin do
   def parse(*args)
