@@ -5,7 +5,8 @@ require "simple-templater/generator_set"
 
 describe SimpleTemplater::GeneratorSet do
   before(:each) do
-    @set = SimpleTemplater::GeneratorSet.new(:test)
+    @generator_dir = File.join(SPEC_ROOT, "stubs", "test_generator", "stubs", "test")
+    @set = SimpleTemplater::GeneratorSet.new(:test, @generator_dir)
   end
 
   describe "#initialize" do
@@ -15,7 +16,7 @@ describe SimpleTemplater::GeneratorSet do
     end
 
     it "should take all others attributes as paths with generators" do
-      set = SimpleTemplater::GeneratorSet.new(:test, File.join(SPEC_ROOT, "stubs", "test_generator", "stubs", "test"))
+      set = SimpleTemplater::GeneratorSet.new(:test, @generator_dir)
       set.paths.should_not be_empty
     end
 
@@ -27,6 +28,17 @@ describe SimpleTemplater::GeneratorSet do
       set = SimpleTemplater::GeneratorSet.new(:test)
       set.stub!(:custom).and_return(Array.new)
       set.paths.should be_empty
+    end
+  end
+
+  describe "#generators" do
+    it "should should be an array with generators" do
+      @set.generators.first.should be_kind_of(SimpleTemplater::Generator)
+    end
+
+    it "should be an empty array if there are no paths with generators" do
+      @set.paths.clear
+      @set.generators.should be_empty
     end
   end
 

@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require "cli"
+require_relative "generator"
 
 module SimpleTemplater
   # one project can has a generator in system gems and in ~/.rango/stubs/project,
@@ -17,11 +18,16 @@ module SimpleTemplater
       directories.select { |file| Dir.exist?(file) }
     end
 
+    def generators
+      @generators ||= self.paths.map { |path| Generator.new(self.name, path) }
+    end
+
     protected
     def check_paths(paths)
-      paths.map do |path|
+      paths.each do |path|
         Dir.exist?(path) || raise(Errno::ENOENT, path)
       end
+      return paths
     end
   end
 end
