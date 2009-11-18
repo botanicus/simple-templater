@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require_relative "../../../spec_helper"
-require "simple-templater/hooks/postprocess/git"
+require "simple-templater/hooks/postprocess/github"
 
-describe SimpleTemplater::Hooks::GitHubHook do
+describe SimpleTemplater::Hooks::Github do
   # TODO
 end

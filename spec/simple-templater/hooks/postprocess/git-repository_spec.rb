@@ -5,7 +5,7 @@ require "simple-templater/hooks/postprocess/git-repository"
 
 describe SimpleTemplater::Hooks::GitRepository do
   before(:each) do
-    @hook = SimpleTemplater::Hooks::GitRepository.new
+    @hook = SimpleTemplater::Hooks::GitRepository.new(Array.new)
     @repo = File.join(SPEC_ROOT, "stubs", "repository")
   end
   

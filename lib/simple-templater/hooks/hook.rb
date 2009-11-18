@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require "rubyexts/string" # String#snake_case
 require "rubyexts/class"
 
 # When generator runs:
@@ -9,7 +10,7 @@ require "rubyexts/class"
 #   hook = SimpleTemplater::Hooks.find(key, value)
 #   hook.run
 # end
-class SimpleTemplater
+module SimpleTemplater
   module Hooks
     module DSL
       def hook(key, question, &block)
@@ -24,8 +25,8 @@ class SimpleTemplater
     class Hook
       cattr_reader :hooks
       @@hooks ||= Array.new
-      def self.find(key, value)
-        @@hooks.find { |hook| hook.key == key }
+      def self.find(key)
+        @@hooks.find { |hook| hook.name.split("::").last.snake_case.to_sym == key }
       end
       
       def self.inherited(klass)
@@ -36,7 +37,7 @@ class SimpleTemplater
       end
 
       def key
-        self.class.snake_case.to_sym
+        self.class.name.split("::").last.snake_case.to_sym
       end
 
       def question
