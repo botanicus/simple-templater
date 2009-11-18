@@ -9,11 +9,11 @@ h2. API
 <pre>
 require "simple-templater"
 
-templater = SimpleTemplater::Main.new(:rango, Rango.logger)
+templater = SimpleTemplater::Main.new(:rango, SimpleTemplater.logger)
 if defined?(Gem) # try to find generators installed as gems
   templater.discovery!
 else
-  Rango.logger.warn "Running without RubyGems which means SimpleTemplater won't be able to find generators distributed as a Gems."
+  SimpleTemplater.logger.warn "Running without RubyGems which means SimpleTemplater won't be able to find generators distributed as a Gems."
   # register generators just for rango
   load File.join(File.dirname(__FILE__), "..", "simple-templater.scope")
 end

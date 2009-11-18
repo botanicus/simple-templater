@@ -9,12 +9,6 @@ require_relative "main"
 # yes? etc
 require "cli"
 
-# TODO
-# metadata :file option for rendering just one file
-# gem installation (for plugin)
-# usage on rango -h
-# !!! @models.each |model| => create models/%model%.rb
-
 # - Find possible location and take first one
 # - If type of the location is full, then copy it's content directory to the desired name
 # - If type of the location is diff, then take another location, copy it and then copy files from the first one
@@ -75,7 +69,7 @@ module SimpleTemplater
     end
 
     def proceed
-      Rango.logger.info("Creating #{self.config.type} #{@name} from stubs in #{@stubs_dir}")
+      SimpleTemplater.logger.info("Creating #{self.config.type} #{@name} from stubs in #{@stubs_dir}")
       FileUtils.mkdir_p(@name)
       Dir.chdir(@name) do
         ARGV.clear.push(*[self.content_dir, @args].flatten.compact)
@@ -91,7 +85,7 @@ module SimpleTemplater
     def run_init_hook
       Dir.chdir(@name) do
         if File.exist?(hook = File.join(@stubs_dir, "postprocess.rb"))
-          load(hook) && Rango.logger.inspect("Running postprocess.rb hook")
+          load(hook) && SimpleTemplater.logger.inspect("Running postprocess.rb hook")
         end
       end
     end
@@ -107,11 +101,11 @@ module SimpleTemplater
       metadata_file = File.join(@stubs_dir, "metadata.yml")
       YAML::load_file(metadata_file)
     rescue Errno::ENOENT
-      Rango.logger.fatal("Rango expected '#{metadata_file}'")
+      SimpleTemplater.logger.fatal("Rango expected '#{metadata_file}'")
     end
 
     def config
-      defaults = {processing: true, type: "full"}
+      defaults = {processing: true, type: "full", directory: true}
       OpenStruct.new(defaults.merge(self.metadata))
     end
   end

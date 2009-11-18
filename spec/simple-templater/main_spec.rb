@@ -10,18 +10,6 @@ describe SimpleTemplater::Main do
   end
   
   describe ".new" do
-    it "should set logger if it's provided as second argument" do
-      logger    = Logger.new(STDOUT)
-      templater = SimpleTemplater::Main.new(:test, logger)
-      templater.logger.should equal(logger)
-    end
-    
-    it "should set default logger if second argument isn't provided" do
-      [:info, :debug, :error, :fatal].each do |method|
-        @templater.logger.should respond_to(method)
-      end
-    end
-
     it "should set scope" do
       @templater.scope.should eql(:test)
     end

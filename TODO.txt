@@ -1,3 +1,5 @@
 - ARGV parsing[1]
 - release tasks
 - hooks: required, description, default
+- metadata :file option for rendering just one file
+- !!! @models.each |model| => create models/%model%.rb

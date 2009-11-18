@@ -2,10 +2,9 @@
 
 module SimpleTemplater
   class Main
-    attr_reader :scope, :logger, :generators
+    attr_reader :scope, :generators
     def initialize(scope, logger = nil)
       @scope      = scope
-      @logger     = logger
       @generators = Hash.new
     end
     
@@ -24,12 +23,6 @@ module SimpleTemplater
     # templater.register(:project, path)
     def register(name, path)
       SimpleTemplater.register(scope, Generator.new(name, path))
-    end
-    
-    private
-    def standard_logger
-      require "logger"
-      Logger.new(STDOUT)
     end
   end
 end

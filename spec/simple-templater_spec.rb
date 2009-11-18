@@ -40,5 +40,13 @@ describe SimpleTemplater do
         SimpleTemplater.scopes.should_not be_empty
       end
     end
+
+    describe ".logger" do
+      it "should set default logger" do
+        [:info, :debug, :error, :fatal].each do |method|
+          SimpleTemplater.logger.should respond_to(method)
+        end
+      end
+    end
   end
 end

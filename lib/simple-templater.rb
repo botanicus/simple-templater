@@ -32,6 +32,17 @@ module SimpleTemplater
   VERSION ||= "0.0.1"
   GeneratorNotFound ||= Class.new(StandardError)
 
+  def self.logger
+    @@logger ||= begin
+      require "logger"
+      Logger.new(STDOUT)
+    end
+  end
+
+  def self.logger=(logger)
+    @@logger = logger
+  end
+
   def self.scopes
     @scopes ||= Hash.new
   end

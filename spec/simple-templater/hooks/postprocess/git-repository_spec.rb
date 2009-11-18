@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require "fileutils"
 require_relative "../../../spec_helper"
 require "simple-templater/hooks/postprocess/git-repository"
 
@@ -7,6 +8,10 @@ describe SimpleTemplater::Hooks::GitRepository do
   before(:each) do
     @hook = SimpleTemplater::Hooks::GitRepository.new(Array.new)
     @repo = File.join(SPEC_ROOT, "stubs", "repository")
+  end
+
+  after(:each) do
+    FileUtils.rm_r(@repo)
   end
   
   it "should create .git directory" do

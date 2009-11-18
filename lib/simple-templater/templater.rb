@@ -12,7 +12,7 @@ module SimpleTemplater
   class Templater
     def self.create(*args)
       templater = self.new(*args)
-      Rango.logger.debug("Context: #{templater.context.inspect}")
+      SimpleTemplater.logger.debug("Context: #{templater.context.inspect}")
       templater.create
     end
 
@@ -29,7 +29,7 @@ module SimpleTemplater
           proceed_file(template, file)
         else
           unless Dir.exist?(file)
-            Rango.logger.debug("[MKDIR] #{file}")
+            SimpleTemplater.logger.debug("[MKDIR] #{file}")
             FileUtils.mkdir_p(file)
           end
         end
@@ -55,25 +55,25 @@ module SimpleTemplater
       FileUtils.mkdir_p(File.dirname(file))
       if template.end_with?(".rbt")
         if File.exist?(file)
-          Rango.logger.debug("[RETEMPLATE] #{file} (from #{template})")
+          SimpleTemplater.logger.debug("[RETEMPLATE] #{file} (from #{template})")
         else
-          Rango.logger.debug("[TEMPLATE] #{file} (from #{template})")
+          SimpleTemplater.logger.debug("[TEMPLATE] #{file} (from #{template})")
         end
         File.open(file, "w") do |file|
           eruby = Erubis::Eruby.new(File.read(template))
           begin
             output = eruby.evaluate(@context)
           rescue Exception => exception
-            Rango.logger.error("Exception occured in template #{template}: #{exception.message}")
+            SimpleTemplater.logger.error("Exception occured in template #{template}: #{exception.message}")
           end
           file.print(output)
         end
       else # just copy
         if File.exist?(file)
-          Rango.logger.debug("[RECOPY] #{file} (from #{template})")
+          SimpleTemplater.logger.debug("[RECOPY] #{file} (from #{template})")
           FileUtils.cp_f(template, file)
         else
-          Rango.logger.debug("[COPY] #{file} (from #{template})")
+          SimpleTemplater.logger.debug("[COPY] #{file} (from #{template})")
           FileUtils.cp(template, file)
         end
       end
