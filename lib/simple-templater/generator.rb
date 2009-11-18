@@ -31,7 +31,7 @@ module SimpleTemplater
     attr_reader :name
     # TODO
     def self.stubs_dirs
-      ["#{os.home}/.rango/stubs", "#{self.rango_root}/stubs"]
+      [self.path, "#{os.home}/.#{name}/stubs"]
     end
 
     def self.list
@@ -46,7 +46,7 @@ module SimpleTemplater
 
     def initialize(name, path, *args)
       raise GeneratorNotFound unless File.directory?(path)
-      @name, @args = name, args
+      @name, @args = name.to_sym, args
       if File.exist?(name)
         abort "#{name} already exist, aborting."
       end

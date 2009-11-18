@@ -1,0 +1,8 @@
+SimpleTemplater.scope(:local) do
+  root = File.dirname(__FILE__)
+  Dir["#{root}/test_generator/stubs/*"].each do |stub_dir|
+    if File.directory?(stub_dir)
+      SimpleTemplater.register(:local, File.basename(stub_dir), File.expand_path(stub_dir))
+    end
+  end
+end

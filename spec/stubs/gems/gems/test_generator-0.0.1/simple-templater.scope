@@ -2,7 +2,7 @@ SimpleTemplater.scope(:test) do
   root = File.dirname(__FILE__)
   Dir["#{root}/stubs/*"].each do |stub_dir|
     if File.directory?(stub_dir)
-      SimpleTemplater.register(:test, stub_dir)
+      SimpleTemplater.register(:test, File.basename(stub_dir), File.expand_path(stub_dir))
     end
   end
 end

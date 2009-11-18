@@ -39,6 +39,12 @@ describe SimpleTemplater do
         SimpleTemplater.discover!(:test)
         SimpleTemplater.scopes.should have_key(:test)
       end
+
+      it "should not reset SimpleTemplater.scopes, so I can load local scope when I do local development" do
+        load File.join(SPEC_ROOT, "stubs", "simple-templater.scope")
+        SimpleTemplater.discover!(:test)
+        SimpleTemplater.scopes.should have_key(:local)
+      end
     end
 
     describe ".logger" do

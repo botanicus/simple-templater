@@ -52,6 +52,8 @@ module SimpleTemplater
     @scopes ||= Hash.new
   end
 
+  # scope => generator
+  # rango: Generator.new(:project, path)
   def self.generators
     @generators ||= Hash.new
   end
@@ -63,13 +65,13 @@ module SimpleTemplater
   # scope<String>:: The name of the scope
   # block<&Proc>:: A block of code to execute provided the scope is correct
   def self.scope(scope, &block)
-    @scopes[scope] ||= Array.new
-    @scopes[scope] << block
+    self.scopes[scope] ||= Array.new
+    self.scopes[scope] << block
   end
 
-  def self.register(scope, generator)
+  def self.register(scope, name, path)
     self.generators[scope] ||= Array.new
-    self.generators[scope].push(generator)
+    self.generators[scope].push(Generator.new(name, path))
   end
 
   # Searches installed gems for simple-templater.scope files and loads all code blocks in them that match
@@ -78,14 +80,13 @@ module SimpleTemplater
   # === Parameters
   # scope<String>:: The name of the scope to search for
   def self.discover!(scope)
-    @scopes = {}
     generator_files.each { |file| load file }
-    if @scopes[scope]
-      @scopes[scope].each do |block|
+    if self.scopes[scope]
+      self.scopes[scope].each do |block|
         begin
           block.call
         rescue Exception => exception
-          warn "[Scope #{scope}] Exception #{exception} occured in scope file #{block.inspect}\n#{exception.backtrace.join("\n")}"
+          warn "[Scope #{scope}] Exception #{exception.class}: #{exception} occured in scope file #{block.inspect}\n#{exception.backtrace.join("\n")}"
         end
       end
     end
