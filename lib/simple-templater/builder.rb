@@ -111,6 +111,12 @@ class SimpleTemplater
           FileUtils.cp(template, file)
         end
       end
+
+      copy_permissions template, file
+    end
+
+    def copy_permissions(template, file) # TODO: reimplement, this is crap
+      File.chmod(0755, file) if File.executable?(template)
     end
   end
 

@@ -1,2 +1,10 @@
 = Version 0.0.1
   * Imported from Rango
+  * bin/simple-templater can generate a project or a stub
+  * it can find all gems with simple-templater.scope file in the root
+  * it has hooks running before & after templater
+  * it knows how to work with diff stubs
+  * it can have variables in file names of stub files
+  * it can have collections in file names of stub files
+  * it use Erubis for processing templates (all files ending with .rbt)
+  * it has context and hooks for interaction with user (ARGV/STDIN)

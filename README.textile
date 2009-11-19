@@ -113,6 +113,6 @@ h2. Diff Generators
 
 h1. Links
 
-- "Wiki":http://wiki.github.com/botanicus/simple-templater
 - "Source Code":http://github.com/botanicus/simple-templater
+- "RunCodeRun":http://runcoderun.com/botanicus/simple-templater
 - "API Documentation":http://rdoc.info/projects/botanicus/simple-templater

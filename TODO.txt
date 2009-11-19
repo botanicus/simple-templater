@@ -1,8 +1,5 @@
 === Version 0.1 ===
-- save permissions (if something in stubs is executable, it should be executable in new project too)
 - README
-- Tweet about it
-- release tasks (GemCutter)
 
 === Version 0.2 ===
 - hooks: description
