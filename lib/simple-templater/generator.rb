@@ -47,7 +47,7 @@ module SimpleTemplater
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           load hook
         end
-        SimpleTemplater::Templater.create(file("content"))
+        SimpleTemplater::Builder.create(file("content"))
       end
       self.run_postprocess_hook
     end
