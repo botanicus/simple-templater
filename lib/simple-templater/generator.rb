@@ -37,12 +37,18 @@ class SimpleTemplater
     # end
     attr_accessor :target
 
-    def initialize(args = ARGV.dup)
+    def initialize(name, path)
+      raise GeneratorNotFound unless File.directory?(path)
+      @name, @path = name.to_sym, path
+      @context = Hash.new
+    end
+
+    def parse_argv(args)
       args.extend(SimpleTemplater::ArgvParsingMixin)
-      @name = args.shift.to_sym
-      @path = args.shift || @name
+      @target  = args.shift || File.basename(@path)
       @context = args.parse!
-      raise GeneratorNotFound unless File.directory?(@path)
+      self.context.merge!(name: File.basename(@target))
+      @target = target
     end
 
     # For DSL
@@ -52,9 +58,8 @@ class SimpleTemplater
 
     # @param target ... ./blog
     # @param args Array --git-repository --no-github
-    def run(target, *args)
-      self.context.merge!(name: File.basename(target))
-      @target = target
+    def run(args = ARGV.dup)
+      self.parse_argv(args)
       self.run_hook("setup.rb")
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
       if self.flat?
