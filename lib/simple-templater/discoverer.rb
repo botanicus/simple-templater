@@ -4,7 +4,7 @@ class SimpleTemplater
   class Discoverer
     def self.detect
       # TODO: coming in version 0.2
-      require "simple-templater/discoverers/rubygems"
+      require "simple-templater/discoverers/gems"
       SimpleTemplater::RubyGems
     end
 
