@@ -53,34 +53,28 @@ class SimpleTemplater
     def run(target, *args)
       self.context.merge!(name: File.basename(target))
       @target = target
-      self.load_setup
+      self.run_hook("setup.rb")
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
       if self.flat?
         SimpleTemplater::Builder.create(file("content"), context)
-        self.run_postprocess_hook
+        self.run_hook("postprocess.rb")
       else
         FileUtils.mkdir_p(@target)
         Dir.chdir(@target) do
           SimpleTemplater::Builder.create(file("content"), context)
-          self.run_postprocess_hook
+          self.run_hook("postprocess.rb")
         end
       end
     end
 
-    def load_setup
-      if File.exist?(hook = file("setup.rb"))
-        self.instance_eval(File.read(hook)) && SimpleTemplater.logger.info("Running setup.rb hook")
+    def run_hook(basename)
+      if File.exist?(hook = file(basename))
+        SimpleTemplater.logger.info("Running #{basename} hook")
+        self.instance_eval(File.read(hook))
+        SimpleTemplater.logger.info("Finished")
       end
     rescue Exception => exception
-      abort "Exception #{exception.inspect} occured during running setup.rb\n#{exception.backtrace.join("\n")}"
-    end
-
-    def run_postprocess_hook
-      if File.exist?(hook = File.join(self.path, "postprocess.rb"))
-        load(hook) && SimpleTemplater.logger.info("Running postprocess.rb hook")
-      end
-    rescue Exception => exception
-      abort "Exception #{exception.inspect} occured during running postprocess.rb\n#{exception.backtrace.join("\n")}"
+      abort "Exception #{exception.inspect} occured during running #{basename}\n#{exception.backtrace.join("\n")}"
     end
 
     def file(path)
