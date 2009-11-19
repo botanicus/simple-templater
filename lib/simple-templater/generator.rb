@@ -2,14 +2,11 @@
 
 require "yaml"
 require "ostruct"
-require "fileutils"
 
 require "simple-templater"
+require "simple-templater/dsl"
 require "simple-templater/builder"
 require "simple-templater/argv_parsing"
-
-# yes? etc
-require "cli"
 
 # - Find possible location and take first one
 # - If type of the location is full, then copy it's content directory to the desired name
@@ -30,7 +27,6 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 class SimpleTemplater
   class Generator
-    include FileUtils # for hook
     attr_reader :name, :path, :context, :before_hooks, :after_hooks
 
     # hook do |generator, context|
@@ -61,11 +57,6 @@ class SimpleTemplater
       self.context.merge!(name: File.basename(@target))
     end
 
-    # For DSL
-    def hook(&block)
-      block.call(self, self.context)
-    end
-
     # @param target ... ./blog
     # @param args Array --git-repository --no-github
     def run(args)
@@ -92,7 +83,7 @@ class SimpleTemplater
     def run_hook(basename)
       if File.exist?(hook = file(basename))
         SimpleTemplater.logger.info("Running #{basename} hook")
-        self.instance_eval(File.read(hook))
+        DSL.new(self).instance_eval(File.read(hook))
         SimpleTemplater.logger.info("Finished")
       end
     rescue Exception => exception

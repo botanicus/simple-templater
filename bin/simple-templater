@@ -57,6 +57,8 @@ begin
       generator_set.run(ARGV)
     rescue SimpleTemplater::TargetAlreadyExist => exception
       abort exception.message
+    rescue Interrupt
+      exit
     rescue Exception => exception
       abort "Exception #{exception.inspect} occured during running generator #{generator_set.inspect}\n#{exception.backtrace.join("\n")}"
     end

@@ -1,22 +1,20 @@
 === Version 0.1 ===
-
-- include FileUtils + more DSL like make_executable etc (hooks)
 - save permissions (if something in stubs is executable, it should be executable in new project too)
-- check if diff templaters work
-- hooks: description
-- refactoring
 - README
 - Tweet about it
 - release tasks (GemCutter)
 
 === Version 0.2 ===
-- bin/simple-templater
+- hooks: description
 - better CLI interface, so project can just run SimpleTemplater::CLI.exec(scope, ARGV)
 - improve project generator (see my other projects)
 - better syntax for simple-templater.scope
-- Logger from Rango (-> RubyExts)
 
 === Version 0.3 ===
-- 100% specs coverage
+- bin/simple-templater
+- Logger from Rango (-> RubyExts)
+
+=== Version 0.4 ===
+- 100% specs coverage & refactoring
 - YARD Code Documentation
 - discoverers: Rip, plain (for classic unix systems, so it will just look for generators in /usr/share or wherevers)

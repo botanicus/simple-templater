@@ -11,16 +11,15 @@ class SimpleTemplater
     attr_reader :name, :paths
     def initialize(name, *paths)
       @name  = name.to_sym
-      @paths = self.custom + check_paths(paths)
-    end
-
-    def custom_path
-      File.join(ENV["HOME"], ".#{name}", "stubs")
+      @paths = check_paths(paths)
+      if File.directory?(self.custom)
+        SimpleTemplater.logger.info "Added custom generator from #{self.custom}"
+        @paths.unshift(self.custom)
+      end
     end
 
     def custom
-      directories = Dir["#{self.custom_path}/*"]
-      directories.select { |file| Dir.exist?(file) }
+      File.join(ENV["HOME"], ".simple-templater", self.name)
     end
 
     def generators
@@ -28,7 +27,6 @@ class SimpleTemplater
     end
 
     def run(args = ARGV)
-      SimpleTemplater.logger.info "Looking for custom generators in #{self.custom_path}: #{self.custom.inspect}"
       full = self.generators.find { |generator| generator.full? }
       diff = self.generators.find { |generator| not generator.full? }
       raise GeneratorNotFound, "Generator set #{self.inspect} hasn't any full generator" if full.nil?

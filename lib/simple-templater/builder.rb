@@ -78,7 +78,8 @@ class SimpleTemplater
       FileUtils.mkdir_p(File.dirname(file))
 
       if File.directory?(template)
-        FileUtils.mkdir file # so %name% will be expanded
+        FileUtils.rm_rf(file) # directory include its content
+        FileUtils.mkdir(file)
       end
 
       if template.end_with?(".rbt")
@@ -101,6 +102,7 @@ class SimpleTemplater
       else # just copy
         if File.directory?(file)
           # do nothing
+          # it shouldn't get here never, we have File.directory? above
         elsif File.file?(file)
           SimpleTemplater.logger.debug("[RECOPY] #{file} (from #{template})")
           FileUtils.cp_f(template, file)
