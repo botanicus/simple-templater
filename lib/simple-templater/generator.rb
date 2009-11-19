@@ -4,7 +4,8 @@ require "yaml"
 require "ostruct"
 require "fileutils"
 
-require_relative "../simple-templater"
+require "simple-templater"
+require "simple-templater/builder"
 
 # yes? etc
 require "cli"

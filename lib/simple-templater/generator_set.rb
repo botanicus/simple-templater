@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require "cli"
-require_relative "generator"
-require_relative "../simple-templater"
+require "simple-templater"
+require "simple-templater/generator"
 
 class SimpleTemplater
   # one project can has a generator in system gems and in ~/.rango/stubs/project,
