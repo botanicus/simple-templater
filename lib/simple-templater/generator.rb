@@ -35,12 +35,13 @@ class SimpleTemplater
     # hook do |generator, context|
     #   generator.target = "#{generator.target}.ru"
     # end
-    attr_accessor :target
+    attr_accessor :target, :hooks
 
     def initialize(name, path)
       raise GeneratorNotFound unless File.directory?(path)
       @name, @path = name.to_sym, path
       @context = Hash.new
+      @hooks = Array.new
     end
 
     def parse_argv(args)
@@ -72,6 +73,7 @@ class SimpleTemplater
         Dir.chdir(@target) do
           SimpleTemplater::Builder.create(file("content"), context)
           self.run_hook("postprocess.rb")
+          self.run_hooks
         end
       end
     end
@@ -84,6 +86,12 @@ class SimpleTemplater
       end
     rescue Exception => exception
       abort "Exception #{exception.inspect} occured during running #{basename}\n#{exception.backtrace.join("\n")}"
+    end
+
+    def run_hooks
+      self.hooks.each do |hook|
+        hook.invoke(self.context)
+      end
     end
 
     def file(path)

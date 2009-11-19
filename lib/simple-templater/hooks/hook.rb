@@ -34,11 +34,21 @@ class SimpleTemplater
         @@hooks.push(klass)
       end
 
-      def self.invoke
-        self.new.tap do |hook|
-          hook.run if will_run = hook.will_run?
-          return will_run
+      def self.invoke(context)
+        self.new(context).tap do |hook|
+          if hook.will_run?
+            SimpleTemplater.logger.info("Running hook #{self}")
+            hook.run
+            return true
+          else
+            SimpleTemplater.logger.info("Skipping hook #{self}")
+          end
         end
+      end
+
+      attr_reader :context
+      def initialize(context)
+        @context = context
       end
 
       def key
@@ -46,7 +56,7 @@ class SimpleTemplater
       end
 
       def will_run?
-        return self.required_from_argv unless self.required_from_argv.nil?
+        return self.required_from_context unless self.required_from_context.nil?
         return self.question
       end
 
@@ -59,10 +69,8 @@ class SimpleTemplater
       end
 
       protected
-      def required_from_argv
-        ARGV.extend(SimpleTemplater::ArgvParsingMixin)
-        options = ARGV.parse!
-        options[key]
+      def required_from_context
+        self.context[key]
       end
     end
   end

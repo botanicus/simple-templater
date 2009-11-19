@@ -1,16 +1,13 @@
 === Version 0.1 ===
-- names for flat generators
 - refactoring
 - wiki & README
 - specs
 - Tweet about it
 - release tasks (GemCutter)
-- generator.hooks << GitHub
 
 === Version 0.2 ===
 - YARD Code Documentation
 - hooks: required, description, default
-- metadata :file option for rendering just one file
 - Rip discovery support
 
 - simple-templater create stub    # simple-templater.scope stubs/#{name} with metadata & content
