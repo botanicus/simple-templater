@@ -1,8 +1,6 @@
 #!/usr/bin/env rake1.9
 # encoding: utf-8
 
-require_relative "lib/simple-templater"
-
 # http://support.runcoderun.com/faqs/builds/how-do-i-run-rake-with-trace-enabled
 Rake.application.options.trace = true
 
@@ -35,12 +33,13 @@ task :gem do
   sh "gem build simple-templater.gemspec"
 end
 
-desc "Release version #{SimpleTemplater::VERSION}"
+desc "Release new version of simple-templater"
 task release: ["release:tag", "release:push"]
 
 namespace :release do
-  desc "Create Git tag #{SimpleTemplater::VERSION}"
+  desc "Create Git tag"
   task :tag do
+    require_relative "lib/simple-templater"
     puts "Creating new git tag #{SimpleTemplater::VERSION} and pushing it online ..."
     sh "git tag -a -m 'Version #{SimpleTemplater::VERSION}' #{SimpleTemplater::VERSION}"
     sh "git push --tags"
