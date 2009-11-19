@@ -9,6 +9,10 @@ describe SimpleTemplater::ArgvParsingMixin do
     args.parse!
   end
 
+  it "should extend ARGV" do
+    ARGV.metaclass.included_modules.should include(SimpleTemplater::ArgvParsingMixin)
+  end
+
   describe "#parse!" do
     it "should returns Hash" do
       parse.should be_kind_of(Hash)

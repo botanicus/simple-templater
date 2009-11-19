@@ -23,3 +23,5 @@ class SimpleTemplater
     end
   end
 end
+
+ARGV.extend(SimpleTemplater::ArgvParsingMixin)
