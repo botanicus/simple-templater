@@ -46,7 +46,7 @@ class SimpleTemplater
         end
       end
 
-      attr_reader :context
+      attr_reader :context, :reply
       def initialize(context)
         @context = context
       end
@@ -56,8 +56,10 @@ class SimpleTemplater
       end
 
       def will_run?
-        return self.context[key] unless self.context[key].nil?
-        return self.question
+        @reply ||= begin
+          return self.context[key] unless self.context[key].nil?
+          return self.question
+        end
       end
 
       def question
