@@ -1,6 +1,3 @@
-=== Version 0.1 ===
-- README
-
 === Version 0.2 ===
 - hooks: description
 - better CLI interface, so project can just run SimpleTemplater::CLI.exec(scope, ARGV)

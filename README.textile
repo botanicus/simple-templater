@@ -6,11 +6,29 @@ h1. Usage
 
 h2. Available Generators
 
+Even if SimpleTemplater is more API for writting generators, it has some custom included.
+
 h3. Stub Generator
+
+If you want to create your new generator, this is what you are looking for. Just run @simple-templater create stub my_generator@ and that's it!
+
+* @--flat@ | @--no-flat@ (default: @--no-flat@)
+* @--full@ | @--no-full@ (default: @--full@)
+* @--setup-hook@ | @--no-setup-hook@ (default: @--setup-hook@)
+* @--postprocess-hook@ | @--no-postprocess-hook@ (default: @--postprocess-hook@)
 
 h3. Project Generator
 
+Project generator can generate new Ruby project.
+
+* @--full-name="Jakub Stastny"@
+* @--git-repository@ if you want to create new Git repository and do the initial commit (default: will ask you)
+* @--github-user=botanicus@ (default: ENV["USER"])
+* @--github-repository=simple-templater@ (default: same as name of the new project)
+
 h2. API
+
+You would probably want to use simple templater for your own generators, here is how:
 
 <pre>
 require "simple-templater"
