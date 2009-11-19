@@ -71,6 +71,7 @@ describe SimpleTemplater do
 
   describe "#generators" do
     it "should be empty hash if there are no generators" do
+      pending
       @templater.generators.should be_empty
       @templater.generators.should be_kind_of(Hash)
     end

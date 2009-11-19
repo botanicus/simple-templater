@@ -35,14 +35,14 @@ class SimpleTemplater
       end
 
       def self.invoke(context)
-        self.new(context).tap do |hook|
-          if hook.will_run?
-            SimpleTemplater.logger.info("Running hook #{self}")
-            hook.run
-            return true
-          else
-            SimpleTemplater.logger.info("Skipping hook #{self}")
-          end
+        hook = self.new(context)
+        if hook.will_run?
+          SimpleTemplater.logger.info("Running hook #{self}")
+          hook.run
+          return true
+        else
+          SimpleTemplater.logger.info("Skipping hook #{self}")
+          return false
         end
       end
 
@@ -56,9 +56,11 @@ class SimpleTemplater
       end
 
       def will_run?
-        @reply ||= begin
-          self.context[key] unless self.context[key].nil?
-          self.question
+        return @reply unless @reply.nil?
+        if self.context.has_key?(key)
+          @reply = self.context[key]
+        else
+          @reply = self.question
         end
       end
 

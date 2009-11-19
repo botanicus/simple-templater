@@ -4,6 +4,12 @@ h1. About
 
 h1. Usage
 
+h2. Available Generators
+
+h3. Stub Generator
+
+h3. Project Generator
+
 h2. API
 
 <pre>

@@ -36,47 +36,45 @@ describe SimpleTemplater::Hooks::Hook do
     end
 
     it "should find hook with :test key" do
-      hook = Hook.find(:test).new
+      hook = Hook.find(:test).new(Hash.new)
       hook.should respond_to(:run)
       hook.should respond_to(:question)
     end
   end
 
   describe ".invoke" do
-    describe "with ARGV" do
+    describe "with context from ARGV" do
       before(:each) do
-        @hook = Test.new
+        @hook = Test.new(Hash.new)
         Test.stub!(:new).and_return(@hook)
       end
 
       it "should call #run method" do
-        ARGV.clear.push("--test")
         @hook.should_receive(:run)
-        capture { Test.invoke }
+        capture { Test.invoke(test: true) }
       end
 
-      it "should not call #run method if the argument is starting with --no" do
-        ARGV.clear.push("--no-test")
+      it "should not call #run method if the argument is negative" do
+        pending
         @hook.should_not_receive(:run)
-        capture { Test.invoke }
+        capture { Test.invoke(test: false) }
       end
     end
 
-    describe "without ARGV" do
+    describe "without context from ARGV" do
       it "should print question with suggestions how user can respond" do
-        ARGV.clear
-        output = capture("y\n") { Test.invoke }.output
+        output = capture("y\n") { Test.invoke(Hash.new) }.output
         regexp = Regexp.new(Regexp.quote("Do you hear me? [Y/n]"))
         output.should match(regexp)
       end
 
       it "should take y as true" do
-        returned = capture("y\n") { Test.invoke }.returned
+        returned = capture("y\n") { Test.invoke(Hash.new) }.returned
         returned.should be_true
       end
 
       it "should take n as false" do
-        returned = capture("n\n") { Test.invoke }.returned
+        returned = capture("n\n") { Test.invoke(Hash.new) }.returned
         returned.should be_false
       end
     end
@@ -84,7 +82,7 @@ describe SimpleTemplater::Hooks::Hook do
 
   describe "instance methods" do
     before(:each) do
-      @hook = Hook.find(:empty).new
+      @hook = Hook.find(:empty).new(Hash.new)
     end
 
     describe "#key" do

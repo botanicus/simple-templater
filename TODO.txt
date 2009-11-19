@@ -6,12 +6,13 @@
 - check if diff templaters work
 - hooks: description
 - refactoring
-- YARD Code Documentation
-- wiki & README
+- README
 - 100% specs coverage
 - Tweet about it
 - release tasks (GemCutter)
 
 === Version 0.2 ===
+- YARD Code Documentation
 - Rip discovery support
+- better syntax for simple-templater.scope
 - Logger from Rango (-> RubyExts)
