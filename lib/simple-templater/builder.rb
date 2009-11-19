@@ -4,6 +4,7 @@ require "erubis"
 require "fileutils"
 require "tempfile"
 require "find"
+require "simple-templater/helpers"
 
 # @since 0.0.3
 # @example
