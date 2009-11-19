@@ -40,7 +40,7 @@ class SimpleTemplater
     def initialize(args = ARGV.dup)
       args.extend(SimpleTemplater::ArgvParsingMixin)
       @name = args.shift.to_sym
-      @path = args.shift
+      @path = args.shift || @name
       @context = args.parse!
       raise GeneratorNotFound unless File.directory?(@path)
     end
