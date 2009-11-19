@@ -30,18 +30,27 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 class SimpleTemplater
   class Generator
-    attr_reader :name, :path, :context
+    include FileUtils # for hook
+    attr_reader :name, :path, :context, :before_hooks, :after_hooks
 
     # hook do |generator, context|
     #   generator.target = "#{generator.target}.ru"
     # end
-    attr_accessor :target, :hooks
+    attr_accessor :target
 
     def initialize(name, path)
       raise GeneratorNotFound unless File.directory?(path)
       @name, @path = name.to_sym, path
+      @before_hooks, @after_hooks = Array.new, Array.new
       @context = Hash.new
-      @hooks = Array.new
+    end
+
+    def before(*hooks)
+      self.before_hooks.push(*hooks)
+    end
+
+    def after(*hooks)
+      self.after_hooks.push(*hooks)
     end
 
     def parse_argv(args)
@@ -62,6 +71,8 @@ class SimpleTemplater
     def run(args)
       self.parse_argv(args)
       self.run_hook("setup.rb")
+      SimpleTemplater.logger.info("[#{self.name} generator] Running before hooks #{self.before_hooks.inspect}")
+      self.run_hooks(:before)
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
       if self.flat?
         # flat/content/flat.ru.rbt
@@ -73,7 +84,7 @@ class SimpleTemplater
         Dir.chdir(@target) do
           SimpleTemplater::Builder.create(file("content"), context)
           self.run_hook("postprocess.rb")
-          self.run_hooks
+          self.run_hooks(:after)
         end
       end
     end
@@ -88,8 +99,8 @@ class SimpleTemplater
       abort "Exception #{exception.inspect} occured during running #{basename}\n#{exception.backtrace.join("\n")}"
     end
 
-    def run_hooks
-      self.hooks.each do |hook|
+    def run_hooks(type)
+      self.send("#{type}_hooks").each do |hook|
         hook.invoke(self.context)
       end
     end

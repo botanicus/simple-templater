@@ -1,3 +1,6 @@
+#!/usr/bin/env ruby1.9
+# encoding: utf-8
+
 # --list (scope): list all generators available for given scope or just list all generators
 # -i | --interactive run IRB with loaded simple templater
 # --scopes: list all available scopes
@@ -5,3 +8,60 @@
 
 # simple-templater [scope] [generator] [options] [arguments]
 # simple-templater rango project my_blog --orm=datamapper
+
+#!/usr/bin/env ruby1.9
+# encoding: utf-8
+
+base   = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+libdir = File.expand_path(File.join(File.dirname(base), "..", "lib"))
+
+vendor = File.join(File.dirname(__FILE__), "..", "vendor")
+if File.directory?(vendor)
+  Dir["#{vendor}/*"].each do |path|
+    if File.directory?(path) && Dir["#{path}/*"].empty?
+      warn "Dependency #{File.basename(path)} in vendor seems to be empty. Run git submodule init && git submodule update to checkout it."
+    elsif File.directory?(path) && File.directory?(File.join(path, "lib"))
+      $:.unshift(File.join(path, "lib"))
+    end
+  end
+end
+
+# because of system installation, there is bin/../lib, but not bin/../lib/rango
+if File.directory?(File.join(libdir, "simple-templater"))
+  # NOTE: don't test if libdir is already in $:, just put it there,
+  # otherwise you might get errors because of you are loading bad simple-templater
+  $:.unshift(libdir)
+end
+
+require "simple-templater"
+
+# === Helpers === #
+# TODO: Generators.each { |generator| puts generator.help }
+def usage
+<<-HELP
+=== Usage ===
+rango create project mycoolproject    Generate new site
+rango create app mycoolapp            Generate new application
+HELP
+end
+
+begin
+  ARGV.shift # create
+  generator_name = ARGV.shift
+  templater = SimpleTemplater.new(:simple_templater)
+  # This enables you to create custom generators for Rango
+  load "simple-templater.scope" # neccesary if we run rango locally and not from RubyGems
+  templater.discover!
+  generator_set = templater.find(generator_name)
+  if generator_set.nil?
+    abort "Generator #{generator_name} doesn't exist. Available generators are: #{templater.generators.map { |set| set.name }.inspect}"
+  else
+    begin
+      generator_set.run(ARGV)
+    rescue SimpleTemplater::TargetAlreadyExist => exception
+      abort exception.message
+    rescue Exception => exception
+      abort "Exception #{exception.inspect} occured during running generator #{generator_set.inspect}\n#{exception.backtrace.join("\n")}"
+    end
+  end
+end

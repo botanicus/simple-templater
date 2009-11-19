@@ -7,7 +7,7 @@ module SimpleTemplater::Hooks
   class FullName < Hook
     def question
       name = ENV["USER"]
-      CLI.yes?("Input your name or press enter if '#{name}' is OK", default: name)
+      CLI.ask("Input your name or press enter if '#{name}' is OK", default: name)
     end
 
     def run

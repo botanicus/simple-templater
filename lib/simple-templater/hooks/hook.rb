@@ -57,8 +57,8 @@ class SimpleTemplater
 
       def will_run?
         @reply ||= begin
-          return self.context[key] unless self.context[key].nil?
-          return self.question
+          self.context[key] unless self.context[key].nil?
+          self.question
         end
       end
 

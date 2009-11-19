@@ -6,6 +6,14 @@ require "tempfile"
 require "find"
 require "simple-templater/helpers"
 
+module FileUtils
+  def self.cp_f(source, target)
+    sh "cp -f '#{source}' '#{target}'"
+    # self.rm target
+    # self.cp source, target
+  end
+end
+
 # @since 0.0.3
 # @example
 #   SimpleTemplater::Builder.create("my_generator_dir", user: "botanicus", constant: -> { |argv| argv.first.camel_case })
@@ -26,14 +34,7 @@ class SimpleTemplater
       Find.find(@content_dir) do |template|
         file = self.expand_path(template)
         next if template == @content_dir
-        if File.file?(template)
-          proceed(template, file)
-        else
-          unless Dir.exist?(file)
-            SimpleTemplater.logger.debug("[MKDIR] #{file}")
-            FileUtils.mkdir_p(file)
-          end
-        end
+        proceed(template, file)
       end
     end
 
@@ -75,6 +76,11 @@ class SimpleTemplater
     def proceed_file(template, file, local_context = Hash.new)
       SimpleTemplater.logger.debug("Local context: #{local_context.inspect}") unless local_context.empty?
       FileUtils.mkdir_p(File.dirname(file))
+
+      if File.directory?(template)
+        FileUtils.mkdir file # so %name% will be expanded
+      end
+
       if template.end_with?(".rbt")
         if File.exist?(file)
           SimpleTemplater.logger.debug("[RETEMPLATE] #{file} (from #{template})")
@@ -93,7 +99,9 @@ class SimpleTemplater
           file.print(output)
         end
       else # just copy
-        if File.exist?(file)
+        if File.directory?(file)
+          # do nothing
+        elsif File.file?(file)
           SimpleTemplater.logger.debug("[RECOPY] #{file} (from #{template})")
           FileUtils.cp_f(template, file)
         else

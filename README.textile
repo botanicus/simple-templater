@@ -38,6 +38,13 @@ h2. Hooks
 
 Each item in ARGV starting with @--@ is processed by a hook. Hooks can be distributed
 
+<pre>
+# default arguments for hook
+hook do |generator, context|
+  context.reverse_merge!(git_repository: true)
+end
+</pre>
+
 h3. Preprocessing
 
 h4. ARGV Parsing

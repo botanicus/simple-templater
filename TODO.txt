@@ -1,14 +1,18 @@
 === Version 0.1 ===
+- before hooks & after hooks
+- bin/simple-templater
+- check project & stub stubs
+- include FileUtils + more DSL like make_executable etc (hooks)
+- save permissions (if something in stubs is executable, it should be executable in new project too)
+- check if diff templaters work
+- hooks: description
 - refactoring
+- YARD Code Documentation
 - wiki & README
-- specs
+- 100% specs coverage
 - Tweet about it
 - release tasks (GemCutter)
 
 === Version 0.2 ===
-- YARD Code Documentation
-- hooks: required, description, default
 - Rip discovery support
-
-- simple-templater create stub    # simple-templater.scope stubs/#{name} with metadata & content
-- simple-templater create project # new generic ruby project
+- Logger from Rango (-> RubyExts)
