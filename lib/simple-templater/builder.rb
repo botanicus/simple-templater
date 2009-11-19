@@ -40,17 +40,14 @@ class SimpleTemplater
     protected
     # %name%_controller.rb => application_controller.rb
     def expand_path(file)
-      file = self.location(file).sub(/\.rbt$/, "")
-      # @context.each do |key, value|
-      #   file.gsub!(/%#{Regexp::quote(key)}%/, value.to_s)
-      # end
-      return file
+      self.location(file).sub(/\.rbt$/, "")
     end
 
     def location(file)
       file.sub(%r[^#{Regexp::quote(@content_dir)}/?], "")
     end
 
+    # TODO: %a%/%b% etc, now it can handle just one %var%
     def proceed(template, file)
       # OK, this is a bit tricky, but it works
       # == TEMPLATE ==   | == CONTEXT ==             | == OUTPUT ==

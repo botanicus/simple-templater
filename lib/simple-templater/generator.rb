@@ -37,10 +37,12 @@ class SimpleTemplater
     # end
     attr_accessor :target
 
-    def initialize(name, path)
-      raise GeneratorNotFound unless File.directory?(path)
-      @name, @path = name.to_sym, path
-      @context = ARGV.parse!
+    def initialize(args = ARGV.dup)
+      args.extend(SimpleTemplater::ArgvParsingMixin)
+      @name = args.shift.to_sym
+      @path = args.shift
+      @context = args.parse!
+      raise GeneratorNotFound unless File.directory?(@path)
     end
 
     # For DSL
