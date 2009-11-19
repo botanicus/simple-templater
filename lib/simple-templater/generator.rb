@@ -30,7 +30,13 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 class SimpleTemplater
   class Generator
-    attr_reader :name, :path, :target, :context
+    attr_reader :name, :path, :context
+
+    # setup do |generator, context|
+    #   generator.target = "#{generator.target}.ru"
+    # end
+    attr_accessor :target
+
     def initialize(name, path)
       raise GeneratorNotFound unless File.directory?(path)
       @name, @path = name.to_sym, path
@@ -49,10 +55,15 @@ class SimpleTemplater
       @target = target
       self.load_setup
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
-      FileUtils.mkdir_p(@target)
-      Dir.chdir(@target) do
+      if self.flat?
         SimpleTemplater::Builder.create(file("content"), context)
         self.run_postprocess_hook
+      else
+        FileUtils.mkdir_p(@target)
+        Dir.chdir(@target) do
+          SimpleTemplater::Builder.create(file("content"), context)
+          self.run_postprocess_hook
+        end
       end
     end
 
@@ -82,6 +93,10 @@ class SimpleTemplater
 
     def diff?
       self.config.type.eql?("diff")
+    end
+
+    def flat?
+      self.config.flat
     end
 
     # Metadata options

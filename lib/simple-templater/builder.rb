@@ -70,6 +70,8 @@ class SimpleTemplater
         else
           raise "Context #{self.context.inspect} doesn't have key #{singular} or #{plural}"
         end
+      else
+        proceed_file(template, file)
       end
     end
 
