@@ -103,4 +103,16 @@ class SimpleTemplater
       end
     end
   end
+
+  class FlatBuilder < Builder
+    attr_reader :source, :target
+    def initialize(source, target, context = Hash.new)
+      @source, @target, @context = source, target, context
+      @content_dir = File.expand_path(File.join(source, ".."))
+    end
+
+    def create
+      proceed(self.source, self.target)
+    end
+  end
 end

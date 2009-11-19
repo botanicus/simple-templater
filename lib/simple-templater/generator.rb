@@ -63,7 +63,9 @@ class SimpleTemplater
       self.run_hook("setup.rb")
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
       if self.flat?
-        SimpleTemplater::Builder.create(file("content"), context)
+        # flat/content/flat.ru.rbt
+        # flat/content/%user%.rb
+        SimpleTemplater::FlatBuilder.create(Dir["#{file("content")}/*"].first, self.target, context)
         self.run_hook("postprocess.rb")
       else
         FileUtils.mkdir_p(@target)
