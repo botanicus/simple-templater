@@ -110,11 +110,7 @@ class SimpleTemplater
     end
 
     def full?
-      self.config.type.eql?("full")
-    end
-
-    def diff?
-      self.config.type.eql?("diff")
+      self.config.full
     end
 
     def flat?
@@ -122,8 +118,8 @@ class SimpleTemplater
     end
 
     # Metadata options
-    # :type: full|diff
-    # :file: flat.ru
+    # :full: yes|no
+    # :flat: yes|no
     def metadata
       metadata_file = File.join(self.path, "metadata.yml")
       YAML::load_file(metadata_file)

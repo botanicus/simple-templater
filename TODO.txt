@@ -1,7 +1,6 @@
 === Version 0.1 ===
-- before hooks & after hooks
 - bin/simple-templater
-- check project & stub stubs
+- project generator
 - include FileUtils + more DSL like make_executable etc (hooks)
 - save permissions (if something in stubs is executable, it should be executable in new project too)
 - check if diff templaters work

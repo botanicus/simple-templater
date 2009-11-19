@@ -30,7 +30,7 @@ class SimpleTemplater
     def run(args = ARGV)
       SimpleTemplater.logger.info "Looking for custom generators in #{self.custom_path}: #{self.custom.inspect}"
       full = self.generators.find { |generator| generator.full? }
-      diff = self.generators.find { |generator| generator.diff? }
+      diff = self.generators.find { |generator| not generator.full? }
       raise GeneratorNotFound, "Generator set #{self.inspect} hasn't any full generator" if full.nil?
       if Dir.exist?(full.name)
         raise TargetAlreadyExist, "#{full.name} already exist, aborting."
