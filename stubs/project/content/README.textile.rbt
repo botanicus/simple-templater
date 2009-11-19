@@ -13,6 +13,6 @@ h1. Usage
 
 h1. Links
 
-* "Wiki":http://wiki.github.com/<%= ENV["USER"] %>/<%= @name %>
-* "API Docs":http://rdoc.info/projects/<%= ENV["USER"] %>/<%= @name %>
-* "Bug reporting":http://github.com/<%= ENV["USER"] %>/<%= @name %>/issues
+* "Wiki":http://wiki.github.com/<%= @github_user %>/<%= @github_repository %>
+* "API Docs":http://rdoc.info/projects/<%= @github_user %>/<%= @github_repository %>
+* "Bug reporting":http://github.com/<%= @github_user %>/<%= @github_repository %>/issues

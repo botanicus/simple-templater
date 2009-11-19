@@ -2,9 +2,9 @@
 
 require_relative "spec_helper"
 
-describe <%= @name.camel_case %> do
+describe <%= @constant %> do
   it "should have VERSION constant" do
-    Rango::VERSION.should be_kind_of(String)
-    Rango::VERSION.should match(/^\d+\.\d+\.\d+$/)
+    <%= @constant %>::VERSION.should be_kind_of(String)
+    <%= @constant %>::VERSION.should match(/^\d+\.\d+\.\d+$/)
   end
 end

@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require "simple-templater/hooks/preprocess/github"
 require "simple-templater/hooks/preprocess/full_name"
 
 # This hook will be executed before templater start to generate new files.
@@ -7,5 +8,6 @@ require "simple-templater/hooks/preprocess/full_name"
 
 hook do |generator, context|
   # simple-templater create rango --full-name="Jakub Stastny"
-  generator.before Hooks::FullName
+  generator.before Hooks::FullName, Hooks::GithubRepository, Hooks::GithubUser
+  context[:constant] = context[:name].camel_case
 end

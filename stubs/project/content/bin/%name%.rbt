@@ -4,8 +4,8 @@
 base   = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 libdir = File.expand_path(File.join(File.dirname(base), "..", "lib"))
 
-# because of system installation, there is bin/../lib, but not bin/../lib/rango
-if File.directory?(File.join(libdir, "rango"))
+# because of system installation, there is bin/../lib, but not bin/../lib/<%= @name %>
+if File.directory?(File.join(libdir, "<%= @name %>"))
   $:.unshift(libdir) unless $:.include?(libdir)
 end
 

@@ -9,9 +9,6 @@
 # simple-templater [scope] [generator] [options] [arguments]
 # simple-templater rango project my_blog --orm=datamapper
 
-#!/usr/bin/env ruby1.9
-# encoding: utf-8
-
 base   = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 libdir = File.expand_path(File.join(File.dirname(base), "..", "lib"))
 

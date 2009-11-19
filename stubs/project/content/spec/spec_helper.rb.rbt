@@ -8,4 +8,4 @@ LIBDIR    = File.join(ROOT, "lib")
 # load paths
 $:.unshift(LIBDIR)
 
-require "spec" # so you can run ruby spec/rango/whatever_spec.rb
+require "spec" # so you can run ruby spec/<%= @name %>/whatever_spec.rb
