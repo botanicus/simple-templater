@@ -44,7 +44,11 @@ class SimpleTemplater
       Dir.chdir(@target) do
         ARGV.clear.push(*[file("content"), args].flatten.compact)
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
-          load hook
+          begin
+            load hook
+          rescue Exception => exception
+            abort "Exception #{exception.inspect} occured during running preprocess.rb\n#{exception.backtrace.join("\n")}"
+          end
         end
         SimpleTemplater::Builder.create(file("content"))
       end
@@ -63,6 +67,8 @@ class SimpleTemplater
           load(hook) && SimpleTemplater.logger.info("Running postprocess.rb hook")
         end
       end
+    rescue Exception => exception
+      abort "Exception #{exception.inspect} occured during running postprocess.rb\n#{exception.backtrace.join("\n")}"
     end
 
     def file(path)
