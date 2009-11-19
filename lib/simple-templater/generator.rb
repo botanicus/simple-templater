@@ -6,6 +6,7 @@ require "fileutils"
 
 require "simple-templater"
 require "simple-templater/builder"
+require "simple-templater/argv_parsing"
 
 # yes? etc
 require "cli"
@@ -29,47 +30,43 @@ require "cli"
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
 class SimpleTemplater
   class Generator
-    attr_reader :name, :path
+    attr_reader :name, :path, :target, :context
     def initialize(name, path)
       raise GeneratorNotFound unless File.directory?(path)
       @name, @path = name.to_sym, path
+      @context = ARGV.parse!
+    end
+
+    # For DSL
+    def setup(&block)
+      block.call(self, self.context)
     end
 
     # @param target ... ./blog
     # @param args Array --git-repository --no-github
     def run(target, *args)
+      self.context.merge!(name: File.basename(target))
       @target = target
       self.load_setup
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
       FileUtils.mkdir_p(@target)
       Dir.chdir(@target) do
-        # ARGV.clear.push(*[file("content"), args].flatten.compact)
-        if File.exist?(hook = File.join(self.path, "preprocess.rb"))
-          begin
-            # TODO: context
-            load hook
-            context = eval(File.read(hook))
-            raise ArgumentError, "You have to return a hash from your preprocess.rb hook" unless context.is_a?(Hash)
-          rescue Exception => exception
-            abort "Exception #{exception.inspect} occured during running preprocess.rb\n#{exception.backtrace.join("\n")}"
-          end
-        end
         SimpleTemplater::Builder.create(file("content"), context)
+        self.run_postprocess_hook
       end
-      self.run_postprocess_hook
     end
 
     def load_setup
       if File.exist?(hook = file("preprocess.rb"))
-        load(hook) && SimpleTemplater.logger.info("Running preprocess.rb hook")
+        self.instance_eval(File.read(hook)) && SimpleTemplater.logger.info("Running preprocess.rb hook")
       end
+    rescue Exception => exception
+      abort "Exception #{exception.inspect} occured during running preprocess.rb\n#{exception.backtrace.join("\n")}"
     end
 
     def run_postprocess_hook
-      Dir.chdir(@target) do
-        if File.exist?(hook = File.join(self.path, "postprocess.rb"))
-          load(hook) && SimpleTemplater.logger.info("Running postprocess.rb hook")
-        end
+      if File.exist?(hook = File.join(self.path, "postprocess.rb"))
+        load(hook) && SimpleTemplater.logger.info("Running postprocess.rb hook")
       end
     rescue Exception => exception
       abort "Exception #{exception.inspect} occured during running postprocess.rb\n#{exception.backtrace.join("\n")}"

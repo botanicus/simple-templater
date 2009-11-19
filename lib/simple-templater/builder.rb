@@ -18,8 +18,8 @@ class SimpleTemplater
     end
 
     attr_accessor :context
-    def initialize(content_dir, context = ARGV.parse!)
-      @content_dir, @context = content_dir, context.reverse_merge(name: File.basename(Dir.pwd))
+    def initialize(content_dir, context = Hash.new)
+      @content_dir, @context = content_dir, context
     end
 
     def create
