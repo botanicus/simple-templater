@@ -7,7 +7,7 @@ require File.join(File.dirname(__FILE__), "lib", "<%= @name %>")
 
 Gem::Specification.new do |s|
   s.name = "<%= @name %>"
-  s.version = <%= @name.capitalize %>::VERSION
+  s.version = <%= @name.camel_case %>::VERSION
   s.authors = ["<%= @name %>"]
   s.homepage = "http://github.com/<%= ENV["USER"] %>/<%= @name %>"
   s.summary = "" # TODO: summary

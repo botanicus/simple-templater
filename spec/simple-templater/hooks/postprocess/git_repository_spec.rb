@@ -3,7 +3,7 @@
 require "fileutils"
 require "rubyexts/capture_io"
 require_relative "../../../spec_helper"
-require "simple-templater/hooks/postprocess/git-repository"
+require "simple-templater/hooks/postprocess/git_repository"
 
 describe SimpleTemplater::Hooks::GitRepository do
   before(:each) do
