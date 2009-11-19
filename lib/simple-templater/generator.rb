@@ -46,12 +46,15 @@ class SimpleTemplater
         # ARGV.clear.push(*[file("content"), args].flatten.compact)
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           begin
+            # TODO: context
             load hook
+            context = eval(File.read(hook))
+            raise ArgumentError, "You have to return a hash from your preprocess.rb hook" unless context.is_a?(Hash)
           rescue Exception => exception
             abort "Exception #{exception.inspect} occured during running preprocess.rb\n#{exception.backtrace.join("\n")}"
           end
         end
-        SimpleTemplater::Builder.create(file("content"))
+        SimpleTemplater::Builder.create(file("content"), context)
       end
       self.run_postprocess_hook
     end
