@@ -56,7 +56,7 @@ class SimpleTemplater
       end
 
       def will_run?
-        return self.required_from_context unless self.required_from_context.nil?
+        return self.context[key] unless self.context[key].nil?
         return self.question
       end
 
@@ -66,11 +66,6 @@ class SimpleTemplater
 
       def run
         raise NotImplementedError, "Hook #{self.key} have to have implemented method #run"
-      end
-
-      protected
-      def required_from_context
-        self.context[key]
       end
     end
   end
