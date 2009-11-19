@@ -42,7 +42,7 @@ class SimpleTemplater
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
       FileUtils.mkdir_p(@target)
       Dir.chdir(@target) do
-        ARGV.clear.push(*[file("content"), args].flatten.compact)
+        # ARGV.clear.push(*[file("content"), args].flatten.compact)
         if File.exist?(hook = File.join(self.path, "preprocess.rb"))
           begin
             load hook
