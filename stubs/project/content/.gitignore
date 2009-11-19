@@ -1,0 +1,8 @@
+.DS_Store
+.yardoc
+.cache
+pkg/
+nbproject/
+*.itProject
+*.cache
+Thumb.db

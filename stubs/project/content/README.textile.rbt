@@ -1,0 +1,18 @@
+h1. About
+
+# TODO: write what your library is all about
+
+h1. Installation
+
+* Prerelease: @sudo gem install <%= @name %> --development --prerelease@
+* Stable version: @sudo gem install <%= @name %> --development@
+
+h1. Usage
+
+# TODO: write how to use your library
+
+h1. Links
+
+* "Wiki":http://wiki.github.com/<%= ENV["USER"] %>/<%= @name %>
+* "API Docs":http://rdoc.info/projects/<%= ENV["USER"] %>/<%= @name %>
+* "Bug reporting":http://github.com/<%= ENV["USER"] %>/<%= @name %>/issues
