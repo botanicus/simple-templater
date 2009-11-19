@@ -35,12 +35,19 @@ module SimpleTemplater
       end
 
       def self.invoke
-        hook = self.new
-        hook.run if hook.required_from_argv || hook.question
+        self.new.tap do |hook|
+          hook.run if will_run = hook.will_run?
+          return will_run
+        end
       end
 
       def key
         self.class.name.split("::").last.snake_case.to_sym
+      end
+
+      def will_run?
+        return self.required_from_argv unless self.required_from_argv.nil?
+        return self.question
       end
 
       def question

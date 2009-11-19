@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require "fileutils"
+require "rubyexts/capture_io"
 require_relative "../../../spec_helper"
 require "simple-templater/hooks/postprocess/git-repository"
 
@@ -17,7 +18,7 @@ describe SimpleTemplater::Hooks::GitRepository do
   it "should create .git directory" do
     Dir.mkdir(@repo) # we are using fakefs so we don't have to remove it
     Dir.chdir(@repo) do
-      @hook.run
+      STDOUT.capture { @hook.run } # don't show output, just do it
       Dir.exist?(File.join(@repo, ".git")).should be_true
     end
   end
