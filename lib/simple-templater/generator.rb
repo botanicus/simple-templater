@@ -32,7 +32,7 @@ class SimpleTemplater
   class Generator
     attr_reader :name, :path, :context
 
-    # run do |generator, context|
+    # hook do |generator, context|
     #   generator.target = "#{generator.target}.ru"
     # end
     attr_accessor :target
@@ -52,7 +52,7 @@ class SimpleTemplater
     end
 
     # For DSL
-    def run(&block)
+    def hook(&block)
       block.call(self, self.context)
     end
 
