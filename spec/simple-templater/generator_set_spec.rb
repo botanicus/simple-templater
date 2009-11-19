@@ -48,6 +48,7 @@ describe SimpleTemplater::GeneratorSet do
     end
 
     it "should be an empty array if no custom directories are available" do
+      pending
       @set.custom.should be_empty
     end
   end
