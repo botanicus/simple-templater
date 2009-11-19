@@ -28,7 +28,7 @@ class SimpleTemplater
       diff = self.generators.find { |generator| generator.diff? }
       raise GeneratorNotFound, "Generator set #{self.inspect} hasn't any full generator" if full.nil?
       if Dir.exist?(full.name)
-        raise TargetDirectoryAlreadyExist, "#{full.name} already exist, aborting."
+        raise TargetAlreadyExist, "#{full.name} already exist, aborting."
       end
       full.run(args)
       diff.run(args) unless diff.nil?

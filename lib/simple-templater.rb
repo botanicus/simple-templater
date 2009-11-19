@@ -8,7 +8,7 @@ require "simple-templater/generator_set"
 class SimpleTemplater
   VERSION ||= "0.0.1"
   GeneratorNotFound ||= Class.new(StandardError)
-  TargetDirectoryAlreadyExist ||= Class.new(StandardError)
+  TargetAlreadyExist ||= Class.new(StandardError)
 
   def self.logger
     @@logger ||= begin
