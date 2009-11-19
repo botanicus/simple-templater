@@ -44,11 +44,11 @@ class SimpleTemplater
     end
 
     def parse_argv(args)
+      args = args.dup
       args.extend(SimpleTemplater::ArgvParsingMixin)
       @target  = args.shift || File.basename(@path)
       @context = args.parse!
       self.context.merge!(name: File.basename(@target))
-      @target = target
     end
 
     # For DSL
@@ -58,7 +58,7 @@ class SimpleTemplater
 
     # @param target ... ./blog
     # @param args Array --git-repository --no-github
-    def run(args = ARGV.dup)
+    def run(args)
       self.parse_argv(args)
       self.run_hook("setup.rb")
       SimpleTemplater.logger.info("[#{self.name} generator] Creating #{@target} (#{self.config.type})")

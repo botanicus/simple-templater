@@ -23,15 +23,15 @@ class SimpleTemplater
       @generators ||= self.paths.map { |path| Generator.new(self.name, path) }
     end
 
-    def run(location, *args)
+    def run(args = ARGV)
       full = self.generators.find { |generator| generator.full? }
       diff = self.generators.find { |generator| generator.diff? }
       raise GeneratorNotFound, "Generator set #{self.inspect} hasn't any full generator" if full.nil?
       if Dir.exist?(full.name)
         raise TargetDirectoryAlreadyExist, "#{full.name} already exist, aborting."
       end
-      full.run(location, *args)
-      diff.run(location, *args) unless diff.nil?
+      full.run(args)
+      diff.run(args) unless diff.nil?
     end
 
     protected

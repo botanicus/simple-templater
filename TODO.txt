@@ -1,9 +1,11 @@
 === Version 0.1 ===
+- names for flat generators
 - refactoring
 - wiki & README
 - specs
 - Tweet about it
 - release tasks (GemCutter)
+- generator.hooks << GitHub
 
 === Version 0.2 ===
 - YARD Code Documentation
