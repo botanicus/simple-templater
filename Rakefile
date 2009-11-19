@@ -34,7 +34,7 @@ task :gem do
 end
 
 desc "Release new version of simple-templater"
-task release: ["release:tag", "release:push"]
+task release: ["release:tag", "release:gemcutter"]
 
 namespace :release do
   desc "Create Git tag"
@@ -49,7 +49,7 @@ namespace :release do
   desc "Push gem to Gemcutter"
   task :gemcutter => :gem do
     puts "Pushing to Gemcutter ..."
-    sh "gem push #{gem}"
+    sh "gem push #{Dir["*.gem"].last}"
   end
 end
 
