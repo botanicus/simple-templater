@@ -57,11 +57,11 @@ class SimpleTemplater
     end
 
     def load_setup
-      if File.exist?(hook = file("preprocess.rb"))
-        self.instance_eval(File.read(hook)) && SimpleTemplater.logger.info("Running preprocess.rb hook")
+      if File.exist?(hook = file("setup.rb"))
+        self.instance_eval(File.read(hook)) && SimpleTemplater.logger.info("Running setup.rb hook")
       end
     rescue Exception => exception
-      abort "Exception #{exception.inspect} occured during running preprocess.rb\n#{exception.backtrace.join("\n")}"
+      abort "Exception #{exception.inspect} occured during running setup.rb\n#{exception.backtrace.join("\n")}"
     end
 
     def run_postprocess_hook

@@ -22,8 +22,8 @@ templater.run(ARGV.shift) # run generator from ARGV, for example "project"
 
 h2. File Hierarchy
 
-- @stubs/#{generator_name}/preprocess@
-- @stubs/#{generator_name}/postprocess@
+- @stubs/#{generator_name}/setup.rb@
+- @stubs/#{generator_name}/postprocess.rb@
 - @stubs/#{generator_name}/content@
 
 h2. Templates
