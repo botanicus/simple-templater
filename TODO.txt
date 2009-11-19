@@ -1,13 +1,16 @@
+=== Version 0.1 ===
 - refactoring & renaming
 - wiki & README
 - specs
-- YARD Code Documentation
 - Tweet about it
-
 - release tasks (GemCutter)
+
+=== Version 0.2 ===
+- YARD Code Documentation
 - hooks: required, description, default
 - metadata :file option for rendering just one file
-- !!! @models.each |model| => create models/%model%.rb
+- @models.each |model| => create models/%model%.rb
+- Rip discovery support
 
 - simple-templater create stub    # simple-templater.scope stubs/#{name} with metadata & content
 - simple-templater create project # new generic ruby project

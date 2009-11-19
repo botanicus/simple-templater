@@ -33,7 +33,7 @@ require "rubyexts"
 #
 # Multiple scopes can be added to the same simple-templater.scope file for use with different generator
 # programs.
-module SimpleTemplater
+class SimpleTemplater
   VERSION ||= "0.0.1"
   GeneratorNotFound ||= Class.new(StandardError)
   TargetDirectoryAlreadyExist ||= Class.new(StandardError)
@@ -93,7 +93,6 @@ module SimpleTemplater
     end
   end
 
-  protected
   def self.find_latest_gem_paths
     require "rubygems" unless defined?(Gem)
     # Minigems provides a simpler (and much faster) method for finding the
@@ -116,6 +115,35 @@ module SimpleTemplater
       path = ::File.join(gem_path, "simple-templater.scope")
       files << path if ::File.file?(path)
       files
+    end
+  end
+
+  attr_reader :scope, :generators
+  def initialize(scope, logger = nil)
+    @scope      = scope
+    @generators = Hash.new
+  end
+
+  def logger
+    @logger ||= standard_logger
+  end
+
+  def discover!
+    SimpleTemplater.discover!(self.scope)
+  end
+
+  def generators
+    SimpleTemplater.generators[self.scope] || Hash.new
+  end
+
+  # templater.register(:project, path)
+  def register(name, path)
+    SimpleTemplater.register(self.scope, name, path)
+  end
+
+  def find(name)
+    self.generators.find do |generator|
+      generator.name == name.to_sym
     end
   end
 end

@@ -4,7 +4,7 @@ require "cli"
 require_relative "generator"
 require_relative "../simple-templater"
 
-module SimpleTemplater
+class SimpleTemplater
   # one project can has a generator in system gems and in ~/.rango/stubs/project,
   # and these two generators are one generator set
   class GeneratorSet

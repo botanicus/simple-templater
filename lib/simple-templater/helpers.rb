@@ -3,7 +3,7 @@
 require "rbconfig"
 require "rubyexts/platform"
 
-module SimpleTemplater
+class SimpleTemplater
   module Helpers
     extend self
 

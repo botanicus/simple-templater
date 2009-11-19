@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module SimpleTemplater
+class SimpleTemplater
   module ArgvParsingMixin
     def parse!
       self.inject(Hash.new) do |options, argument|

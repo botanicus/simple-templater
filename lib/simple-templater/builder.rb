@@ -8,7 +8,7 @@ require "find"
 # @since 0.0.3
 # @example
 #   SimpleTemplater::Builder.create("my_generator_dir", user: "botanicus", constant: -> { |argv| argv.first.camel_case })
-module SimpleTemplater
+class SimpleTemplater
   class Builder
     def self.create(*args)
       templater = self.new(*args)

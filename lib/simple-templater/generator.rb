@@ -5,7 +5,6 @@ require "ostruct"
 require "fileutils"
 
 require_relative "../simple-templater"
-require_relative "main"
 
 # yes? etc
 require "cli"
@@ -27,7 +26,7 @@ require "cli"
 # content/foo
 # xxx/bar
 # => simple-templater project blog --models=post,tag --controllers=posts,tags
-module SimpleTemplater
+class SimpleTemplater
   class Generator
     attr_reader :name, :path
     def initialize(name, path)

@@ -11,7 +11,7 @@ require "simple-templater/argv_parsing"
 #   hook = SimpleTemplater::Hooks.find(key, value)
 #   hook.run
 # end
-module SimpleTemplater
+class SimpleTemplater
   module Hooks
     module DSL
       def hook(key, question, &block)

@@ -9,7 +9,7 @@ h2. API
 <pre>
 require "simple-templater"
 
-templater = SimpleTemplater::Main.new(:rango, SimpleTemplater.logger)
+templater = SimpleTemplater.new(:rango, SimpleTemplater.logger)
 if defined?(Gem) # try to find generators installed as gems
   templater.discovery!
 else
