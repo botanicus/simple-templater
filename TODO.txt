@@ -1,4 +1,5 @@
 === Version 0.2 ===
+- javascripts/{javascript}.js for collections (instead of %javascript%)
 - hooks: description
 - better CLI interface, so project can just run SimpleTemplater::CLI.exec(scope, ARGV)
 - improve project generator (see my other projects)
