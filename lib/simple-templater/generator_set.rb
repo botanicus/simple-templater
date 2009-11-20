@@ -30,9 +30,6 @@ class SimpleTemplater
       full = self.generators.find { |generator| generator.full? }
       diff = self.generators.find { |generator| not generator.full? }
       raise GeneratorNotFound, "Generator set #{self.inspect} hasn't any full generator" if full.nil?
-      if Dir.exist?(full.name)
-        raise TargetAlreadyExist, "#{full.name} already exist, aborting."
-      end
       full.run(args)
       diff.run(args) unless diff.nil?
     end
