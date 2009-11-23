@@ -11,7 +11,7 @@ class SimpleTemplater
       if RubyExts::Platform.linux?
         self.plain_shebang(executable, args)
       else
-        self.env_shebang(File.basename(executable), args)
+        self.env_shebang(executable, args)
       end
     end
 
