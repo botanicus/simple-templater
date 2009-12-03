@@ -35,10 +35,11 @@ Gem::Specification.new do |s|
   # runtime dependencies
   s.add_dependency "cli"
   s.add_dependency "rubyexts"
+  s.add_dependency "erubis" # for generators
 
   # development dependencies
   # use gem install simple-templater --development if you want to install them
-  s.add_development_dependency "erubis" # for generators
+  # s.add_development_dependency "erubis" # for generators
 
   # RubyForge
   s.rubyforge_project = "simple-templater"
