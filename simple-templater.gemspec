@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # Ruby version
-  s.required_ruby_version = ::Gem::Requirement.new(">= 1.9")
+  s.required_ruby_version = ::Gem::Requirement.new("~> 1.9")
 
   # runtime dependencies
   s.add_dependency "cli"
