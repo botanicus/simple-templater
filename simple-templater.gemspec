@@ -1,4 +1,4 @@
-#!/usr/bin/env gem1.9 build
+#!/usr/bin/env gem build
 # encoding: utf-8
 
 Dir[File.join(File.dirname(__FILE__), "vendor", "*")].each do |path|
@@ -10,7 +10,7 @@ Dir[File.join(File.dirname(__FILE__), "vendor", "*")].each do |path|
 end
 
 # NOTE: we can't use require_relative because when we run gem build, it use eval for executing this file
-require File.join(File.dirname(__FILE__), "lib", "simple-templater")
+require File.join(File.dirname(__FILE__), "lib", "simple-templater", "version")
 
 Gem::Specification.new do |s|
   s.name = "simple-templater"
