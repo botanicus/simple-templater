@@ -63,7 +63,7 @@ class SimpleTemplater
       self.parse_argv(args)
       self.run_hook("setup.rb")
       if self.full? && Dir.exist?(self.target) # has to run after setup.rb hook, because setup.rb can manipulate with target
-        raise TargetAlreadyExist, "#{full.name} already exist, aborting."
+        raise TargetAlreadyExist, "#{self.target} already exist, aborting."
       end
       SimpleTemplater.logger.info("[#{self.name} generator] Running before hooks #{self.before_hooks.inspect}")
       self.run_hooks(:before)
