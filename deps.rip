@@ -2,6 +2,6 @@
 
 # Syntax:
 # repository [tag or commit to install]
-git://github.com/botanicus/cli.git
-git://github.com/botanicus/rubyexts.git
-git://github.com/genki/erubis.git
+git://github.com/botanicus/cli.git 76a7985d78673426814017d6a1d6ebec2ba1bcc8
+git://github.com/botanicus/rubyexts.git 41ef70523b4b6a19cac52e6c024330103faef993
+git://github.com/genki/erubis.git b4fc63f1e75574676707768680ad72c83e77a001
