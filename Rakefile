@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require_relative "lib/simple-templater"
+require_relative "lib/simple-templater/version"
 
 # ENV setup for external commands
 ENV["RUBYLIB"] = Dir["vendor/*/lib"].join(":")
