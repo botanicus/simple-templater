@@ -1,7 +1,5 @@
 # encoding: utf-8
 
-require "rubyexts/string" # String#snake_case
-require "rubyexts/class"
 require "simple-templater/argv_parsing"
 
 # When generator runs:
@@ -24,14 +22,16 @@ class SimpleTemplater
     end
 
     class Hook
-      cattr_reader :hooks
-      @@hooks ||= Array.new
+      def self.hooks
+        @@hooks ||= Array.new
+      end
+
       def self.find(key)
-        @@hooks.find { |hook| hook.name.split("::").last.snake_case.to_sym == key }
+        self.hooks.find { |hook| hook.name.split("::").last.snake_case.to_sym == key }
       end
 
       def self.inherited(klass)
-        @@hooks.push(klass)
+        self.hooks.push(klass)
       end
 
       def self.invoke(context)

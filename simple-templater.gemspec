@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
 
   # runtime dependencies
   s.add_dependency "cli"
-  s.add_dependency "rubyexts"
   s.add_dependency "erubis" # for generators
 
   # development dependencies

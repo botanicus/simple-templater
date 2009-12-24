@@ -11,7 +11,7 @@ describe SimpleTemplater::Helpers do
   describe "#shebang" do
     include SimpleTemplater::Helpers
     before(:each) do
-      RubyExts::Platform.stub!(:linux?).and_return(true)
+      #RubyExts::Platform.stub!(:linux?).and_return(true)
     end
 
     it "should generate shebang with path to executable on Linux" do
@@ -19,7 +19,7 @@ describe SimpleTemplater::Helpers do
     end
 
     it "should generate shebang with /usr/bin/env on other platforms" do
-      RubyExts::Platform.stub!(:linux?).and_return(false)
+      #RubyExts::Platform.stub!(:linux?).and_return(false)
       shebang("ruby").should eql("#!/usr/bin/env ruby")
     end
 

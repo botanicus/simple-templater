@@ -3,5 +3,4 @@
 # Syntax:
 # repository [tag or commit to install]
 git://github.com/botanicus/cli.git #{commits["cli"]}
-git://github.com/botanicus/rubyexts.git #{commits["rubyexts"]}
 git://github.com/genki/erubis.git #{commits["erubis"]}

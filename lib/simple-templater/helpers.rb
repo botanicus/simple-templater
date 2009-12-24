@@ -1,17 +1,16 @@
 # encoding: utf-8
 
 require "rbconfig"
-require "rubyexts/platform"
 
 class SimpleTemplater
   module Helpers
     extend self
 
     def shebang(executable = rubypath, *args)
-      if RubyExts::Platform.linux?
-        self.plain_shebang(executable, args)
-      else
+      if RUBY_PLATFORM.match(/darwin/)
         self.env_shebang(executable, args)
+      else
+        self.plain_shebang(executable, args)
       end
     end
 
