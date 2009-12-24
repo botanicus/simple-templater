@@ -3,14 +3,19 @@
 require_relative "lib/simple-templater/version"
 
 # ENV setup for external commands
-ENV["RUBYLIB"] = Dir["vendor/*/lib"].join(":")
-$LOAD_PATH.clear.push(*Dir["vendor/*/lib"])
+ENV["RUBYLIB"] = Dir["gems/gems/*/lib"].join(":")
+$LOAD_PATH.clear.push(*Dir["gems/gems/*/lib"])
 
 # http://support.runcoderun.com/faqs/builds/how-do-i-run-rake-with-trace-enabled
 Rake.application.options.trace = true
 
+task :bundle do
+  # NOTE: the sense of the checkout is to avoid overwriting our changes in scripts
+  exec "gem bundle --cached && git checkout script"
+end
+
 # default task for RunCodeRun.com
-task :default => ["submodules:init", :spec]
+task :default => [:bundle, :spec]
 
 # load tasks
 Dir["tasks/*.rake"].each do |taskfile|
