@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -Ivendor/erubis/lib:vendor/abstract/lib:vendor/cli/lib
 # encoding: utf-8
 
-require "simple-templater/core-exts"
+require "simple-templater/core_exts"
 require "simple-templater/discoverer"
 require "simple-templater/generator_set"
 
