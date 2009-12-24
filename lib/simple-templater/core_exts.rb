@@ -1,5 +1,17 @@
 # encoding: utf-8
 
+require 'open3'
+
+module Kernel
+  def sh(command)
+    puts "[SHELL] #{command}"
+    Open3.popen3("sh", "-c", command) do |stdin, stderr, stdout|
+      puts stdout.read
+      puts stderr.read
+    end
+  end
+end
+
 module Enumerable
   # similar to
   def inject!(&block)
