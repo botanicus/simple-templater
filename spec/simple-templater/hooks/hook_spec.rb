@@ -2,7 +2,6 @@
 
 require "ostruct"
 require_relative "../../spec_helper"
-require "rubyexts/capture_io"
 require "simple-templater/hooks/hook"
 
 # factories

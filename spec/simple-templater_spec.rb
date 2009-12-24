@@ -47,14 +47,6 @@ describe SimpleTemplater do
         SimpleTemplater.scopes.should have_key(:local)
       end
     end
-
-    describe ".logger" do
-      it "should set default logger" do
-        [:info, :debug, :error, :fatal].each do |method|
-          SimpleTemplater.logger.should respond_to(method)
-        end
-      end
-    end
   end
 end
 

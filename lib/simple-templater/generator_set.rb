@@ -13,7 +13,7 @@ class SimpleTemplater
       @name  = name.to_sym
       @paths = check_paths(paths)
       if File.directory?(self.custom)
-        SimpleTemplater.logger.info "Added custom generator from #{self.custom}"
+        puts "Added custom generator from #{self.custom}"
         @paths.unshift(self.custom)
       end
     end

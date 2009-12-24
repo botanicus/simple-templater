@@ -33,11 +33,11 @@ You would probably want to use simple templater for your own generators, here is
 <pre>
 require "simple-templater"
 
-templater = SimpleTemplater.new(:rango, SimpleTemplater.logger)
+templater = SimpleTemplater.new(:rango)
 if defined?(Gem) # try to find generators installed as gems
   templater.discovery!
 else
-  SimpleTemplater.logger.warn "Running without RubyGems which means SimpleTemplater won't be able to find generators distributed as a Gems."
+  warn "Running without RubyGems which means SimpleTemplater won't be able to find generators distributed as a Gems."
   # register generators just for rango
   load File.join(File.dirname(__FILE__), "..", "simple-templater.scope")
 end

@@ -21,7 +21,7 @@ class SimpleTemplater
   class Builder
     def self.create(*args)
       templater = self.new(*args)
-      SimpleTemplater.logger.debug("Context: #{templater.context.inspect}")
+      puts("Context: #{templater.context.inspect}")
       templater.create
     end
 
@@ -74,7 +74,7 @@ class SimpleTemplater
     end
 
     def proceed_file(template, file, local_context = Hash.new)
-      SimpleTemplater.logger.debug("Local context: #{local_context.inspect}") unless local_context.empty?
+      puts("Local context: #{local_context.inspect}") unless local_context.empty?
       FileUtils.mkdir_p(File.dirname(file))
 
       if File.directory?(template)
@@ -84,9 +84,9 @@ class SimpleTemplater
 
       if template.end_with?(".rbt")
         if File.exist?(file)
-          SimpleTemplater.logger.debug("[RETEMPLATE] #{file} (from #{template})")
+          puts("[RETEMPLATE] #{file} (from #{template})")
         else
-          SimpleTemplater.logger.debug("[TEMPLATE] #{file} (from #{template})")
+          puts("[TEMPLATE] #{file} (from #{template})")
         end
         File.open(file, "w") do |file|
           eruby = Erubis::Eruby.new(File.read(template))
@@ -95,7 +95,7 @@ class SimpleTemplater
           begin
             output = eruby.evaluate(context)
           rescue Exception => exception
-            SimpleTemplater.logger.error("Exception occured in template #{template}: #{exception.message}")
+            abort "Exception occured in template #{template}: #{exception.message}"
           end
           file.print(output)
         end
@@ -104,10 +104,10 @@ class SimpleTemplater
           # do nothing
           # it shouldn't get here never, we have File.directory? above
         elsif File.file?(file)
-          SimpleTemplater.logger.debug("[RECOPY] #{file} (from #{template})")
+          puts("[RECOPY] #{file} (from #{template})")
           FileUtils.cp_f(template, file)
         else
-          SimpleTemplater.logger.debug("[COPY] #{file} (from #{template})")
+          puts("[COPY] #{file} (from #{template})")
           FileUtils.cp(template, file)
         end
       end
