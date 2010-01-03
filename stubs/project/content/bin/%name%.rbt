@@ -11,4 +11,5 @@ end
 
 require "<%= @name %>"
 
+# TODO: some default args parsing, --version, --help maybe use optparse or so
 # TODO: write the code

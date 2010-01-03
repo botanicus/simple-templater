@@ -1,4 +1,5 @@
 # encoding: utf-8
 
 module <%= @constant %>
+  VERSION = "0.0.1"
 end

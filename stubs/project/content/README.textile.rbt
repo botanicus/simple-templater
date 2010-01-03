@@ -4,8 +4,8 @@ h1. About
 
 h1. Installation
 
-* Prerelease: @sudo gem install <%= @name %> --development --prerelease@
-* Stable version: @sudo gem install <%= @name %> --development@
+* Prerelease: @gem install <%= @name %> --development --prerelease@
+* Stable version: @gem install <%= @name %> --development@
 
 h1. Usage
 
