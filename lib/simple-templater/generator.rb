@@ -65,9 +65,9 @@ class SimpleTemplater
       if self.full? && Dir.exist?(self.target) # has to run after setup.rb hook, because setup.rb can manipulate with target
         raise TargetAlreadyExist, "#{self.target} already exist, aborting."
       end
-      puts("[#{self.name} generator] Running before hooks #{self.before_hooks.inspect}")
+      puts "[#{self.name} generator] Running before hooks #{self.before_hooks.inspect}"
       self.run_hooks(:before)
-      puts("[#{self.name} generator] Creating #{@target} (#{self.config.type})")
+      puts "[#{self.name} generator] Creating #{@target} (#{self.config.type})"
       if self.flat?
         # flat/content/flat.ru.rbt
         # flat/content/%user%.rb
@@ -85,9 +85,9 @@ class SimpleTemplater
 
     def run_hook(basename)
       if File.exist?(hook = file(basename))
-        puts("Running #{basename} hook")
+        puts "Running #{basename} hook"
         DSL.new(self).instance_eval(File.read(hook))
-        puts("Finished")
+        puts "Finished"
       end
     rescue Exception => exception
       abort "Exception #{exception.inspect} occured during running #{basename}\n#{exception.backtrace.join("\n")}"

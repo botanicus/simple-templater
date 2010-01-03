@@ -21,7 +21,7 @@ class SimpleTemplater
   class Builder
     def self.create(*args)
       templater = self.new(*args)
-      puts("Context: #{templater.context.inspect}")
+      puts "Context: #{templater.context.inspect}"
       templater.create
     end
 
@@ -84,9 +84,9 @@ class SimpleTemplater
 
       if template.end_with?(".rbt")
         if File.exist?(file)
-          puts("[RETEMPLATE] #{file} (from #{template})")
+          puts "[RETEMPLATE] #{file} (from #{template})"
         else
-          puts("[TEMPLATE] #{file} (from #{template})")
+          puts "[TEMPLATE] #{file} (from #{template})"
         end
         File.open(file, "w") do |file|
           eruby = Erubis::Eruby.new(File.read(template))
@@ -104,10 +104,10 @@ class SimpleTemplater
           # do nothing
           # it shouldn't get here never, we have File.directory? above
         elsif File.file?(file)
-          puts("[RECOPY] #{file} (from #{template})")
+          puts "[RECOPY] #{file} (from #{template})"
           FileUtils.cp_f(template, file)
         else
-          puts("[COPY] #{file} (from #{template})")
+          puts "[COPY] #{file} (from #{template})"
           FileUtils.cp(template, file)
         end
       end

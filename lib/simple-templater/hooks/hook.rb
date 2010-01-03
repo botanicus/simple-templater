@@ -37,11 +37,11 @@ class SimpleTemplater
       def self.invoke(context)
         hook = self.new(context)
         if hook.will_run?
-          puts("Running hook #{self}")
+          puts "Running hook #{self}"
           hook.run
           return true
         else
-          puts("Skipping hook #{self}")
+          puts "Skipping hook #{self}"
           return false
         end
       end
