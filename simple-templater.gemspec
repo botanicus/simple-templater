@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
 
   # files
-  s.files = Dir.glob("**/*") - Dir.glob("pkg/*")
+  s.files = Dir.glob("**/*") + Dir.glob("**/.gitignore") - Dir.glob("*.gem")
   s.executables = ["simple-templater"]
   s.default_executable = "simple-templater"
   s.require_paths = ["lib"]

@@ -1,4 +1,4 @@
-#!/usr/bin/env gem1.9 build
+#!/usr/bin/env gem build
 # encoding: utf-8
 
 # Run thor package:gem or gem build simple-templater.gemspec
