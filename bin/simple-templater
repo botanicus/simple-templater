@@ -37,14 +37,18 @@ require "simple-templater"
 def usage
 <<-HELP
 === Usage ===
-rango create project mycoolproject    Generate new site
-rango create app mycoolapp            Generate new application
+simple-templater create project mycoolproject    Generate new site
+simple-templater create app mycoolapp            Generate new application
 HELP
 end
 
 begin
-  ARGV.shift # create
-  generator_name = ARGV.shift
+  begin
+    ARGV.shift # create
+  rescue
+    usage
+  end
+  generator_name = ARGV.shift || abort(usage)
   templater = SimpleTemplater.new(:simple_templater)
   # This enables you to create custom generators for Rango
   load "simple-templater.scope" # neccesary if we run rango locally and not from RubyGems
