@@ -1,12 +1,9 @@
-.DS_Store
-*.gem
+/*.gem
 
+.DS_Store
 .cache
 .yardoc
 
+script/*
 gems/*
 !gems/cache
-
-script/*
-!script/spec
-!script/normalize.rb
