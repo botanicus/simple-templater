@@ -1,5 +1,6 @@
 bundle_path "gems"
 
+gem "nake"
 gem "erubis"
 
 gem "haml"
