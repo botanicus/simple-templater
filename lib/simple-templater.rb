@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby -Ivendor/erubis/lib:vendor/abstract/lib:vendor/cli/lib
 # encoding: utf-8
 
+class Hash
+  def reverse_merge!(hash)
+    self.replace(hash.merge(self))
+  end
+end
+
 require "simple-templater/core_exts"
 require "simple-templater/discoverer"
 require "simple-templater/generator_set"

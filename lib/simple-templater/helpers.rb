@@ -6,7 +6,7 @@ class SimpleTemplater
   module Helpers
     extend self
 
-    def shebang(executable = rubypath, *args)
+    def shebang(executable = ruby_basename, *args)
       if RUBY_PLATFORM.match(/darwin/)
         self.env_shebang(executable, args)
       else
@@ -14,7 +14,7 @@ class SimpleTemplater
       end
     end
 
-    def plain_shebang(executable = rubypath, *args)
+    def plain_shebang(executable = ruby_basename, *args)
       "#!#{executable} #{args.join(" ")}".chomp(" ")
     end
 
