@@ -51,7 +51,7 @@ begin
   generator_name = ARGV.shift || abort(usage)
   templater = SimpleTemplater.new(:simple_templater)
   # This enables you to create custom generators for Rango
-  load "simple-templater.scope" # neccesary if we run rango locally and not from RubyGems
+  load File.join(File.dirname(__FILE__), "../simple-templater.scope") # neccesary if we run rango locally and not from RubyGems
   templater.discover!
   generator_set = templater.find(generator_name)
   if generator_set.nil?
