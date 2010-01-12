@@ -3,12 +3,12 @@
 
 # Run ./<%= @name %>.gemspec or gem build <%= @name %>.gemspec
 # NOTE: we can't use require_relative because when we run gem build, it use eval for executing this file
-require File.join(File.dirname(__FILE__), "lib", "<%= @name %>")
+require File.join(File.dirname(__FILE__), "lib", "<%= @name %>", "version")
 
 Gem::Specification.new do |s|
   s.name = "<%= @name %>"
   s.version = <%= @constant %>::VERSION
-  s.authors = ["<%= @name %>"]
+  s.authors = ["<%= @full_name %>"]
   s.homepage = "http://github.com/<%= @github_user %>/<%= @github_repository %>"
   s.summary = "" # TODO: summary
   s.description = "" # TODO: long description
@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
 
   # files
-  s.files = Dir.glob("**/*") - Dir.glob("pkg/*")
-  s.executables = Dir["bin/*"].map { |script| File.basename(script) }
+  s.files = `git ls-files`.split("\n")
+  s.executables = Dir["bin/*"].map &File.method(:basename)
   s.default_executable = "<%= @name %>"
   s.require_paths = ["lib"]
 
@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   # s.add_dependency "my-gem"
 
   # development dependencies
-  # use gem install rango --development if you want to install them
+  # use gem install <%= @name %> --development if you want to install them
   # s.add_development_dependency "simple-templater"
 
   begin
@@ -39,7 +39,6 @@ Gem::Specification.new do |s|
   else
     s.post_install_message = CHANGELOG.new.version_changes
   end
-
 
   # RubyForge
   s.rubyforge_project = "<%= @name %>"

@@ -13,6 +13,8 @@ require "nake/tasks/gem"
 require "nake/tasks/spec"
 require "nake/tasks/release"
 
+require_relative "lib/<%= @name %>/version"
+
 begin
   load "code-cleaner.nake"
   Nake::Task["hooks:whitespace:install"].tap do |task|
@@ -24,14 +26,12 @@ rescue LoadError
   warn "If you want to contribute to <%= @constant %>, please install code-cleaner and then run ./tasks.rb hooks:whitespace:install to get Git pre-commit hook for removing trailing whitespace."
 end
 
-require_relative "lib/simple-templater"
-
 # Setup encoding, so all the operations
 # with strings from another files will work
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
 
-Task[:build].config[:gemspec] = "simple-templater.gemspec"
-Task[:prerelease].config[:gemspec] = "simple-templater.pre.gemspec"
-Task[:release].config[:name] = "simple-templater"
+Task[:build].config[:gemspec] = "<%= @name %>.gemspec"
+Task[:prerelease].config[:gemspec] = "<%= @name %>.pre.gemspec"
+Task[:release].config[:name] = "<%= @name %>"
 Task[:release].config[:version] = <%= @constant %>::VERSION
