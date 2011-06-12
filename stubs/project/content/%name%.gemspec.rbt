@@ -4,6 +4,7 @@
 # Run ./<%= @name %>.gemspec or gem build <%= @name %>.gemspec
 # NOTE: we can't use require_relative because when we run gem build, it use eval for executing this file
 require File.join(File.dirname(__FILE__), "lib", "<%= @name %>", "version")
+require "base64"
 
 Gem::Specification.new do |s|
   s.name = "<%= @name %>"
@@ -13,12 +14,13 @@ Gem::Specification.new do |s|
   s.summary = "" # TODO: summary
   s.description = "" # TODO: long description
   s.cert_chain = nil
-  s.email = # TODO: your mail
+  s.email = Base64.decode64() # TODO: your encrypted e-mail
   s.has_rdoc = true
 
   # files
   s.files = `git ls-files`.split("\n")
-  s.executables = Dir["bin/*"].map &File.method(:basename)
+
+  s.executables = Dir["bin/*"].map(&File.method(:basename))
   s.default_executable = "<%= @name %>"
   s.require_paths = ["lib"]
 

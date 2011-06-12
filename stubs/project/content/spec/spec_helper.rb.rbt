@@ -1,11 +1,7 @@
 # encoding: utf-8
 
-# constants
-SPEC_ROOT = File.dirname(__FILE__)
-ROOT      = File.expand_path(File.join(SPEC_ROOT, ".."))
-LIBDIR    = File.join(ROOT, "lib")
+# dependencies
+require "spec"
 
-# load paths
-$:.unshift(LIBDIR)
-
-require "spec" # so you can run ruby spec/<%= @name %>/whatever_spec.rb
+# setup load paths
+$:.unshift(File.expand_path("../lib"), __FILE__)

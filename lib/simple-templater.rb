@@ -12,7 +12,7 @@ require "simple-templater/discoverer"
 require "simple-templater/generator_set"
 
 class SimpleTemplater
-  VERSION ||= "0.0.1.4"
+  VERSION ||= "0.0.1.6"
 
   GeneratorNotFound ||= Class.new(StandardError)
   TargetAlreadyExist ||= Class.new(StandardError)

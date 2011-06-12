@@ -19,7 +19,7 @@ class SimpleTemplater
     end
 
     def custom
-      File.join(ENV["HOME"], ".simple-templater", self.name)
+      File.join(ENV["HOME"], ".simple-templater", self.name.to_s)
     end
 
     def generators
