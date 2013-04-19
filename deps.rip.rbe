@@ -1,6 +1,0 @@
-#!/usr/bin/env rip install
-
-# Syntax:
-# repository [tag or commit to install]
-git://github.com/botanicus/cli.git #{commits["cli"]}
-git://github.com/genki/erubis.git #{commits["erubis"]}

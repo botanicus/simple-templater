@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 # NOTE: we can't use require_relative because when we run gem build, it use eval for executing this file
-require File.join(File.dirname(__FILE__), "lib", "simple-templater")
+require File.join(File.dirname(__FILE__), "lib", "simple-templater", "version")
 require "base64"
 
 Gem::Specification.new do |s|
@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/botanicus/simple-templater"
   s.summary = "SimpleTemplater is dead-simple solution for creating generators."
   s.description = "SimpleTemplater is dead-simple solution for creating generators. It strongly uses convention over configuration, so you don't have to write loads of code to generate one stupid plain text README."
-  s.cert_chain = nil
   s.email = Base64.decode64("c3Rhc3RueUAxMDFpZGVhcy5jeg==\n")
   s.has_rdoc = true
 
