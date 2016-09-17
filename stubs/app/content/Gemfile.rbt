@@ -1,0 +1,24 @@
+# encoding: utf-8
+
+ruby "<%= @ruby_version %>"
+
+source "https://rubygems.org"
+
+# Infrastructure.
+gem "nake"
+gem "foreman"
+
+# Server-related.
+gem "thin"
+
+gem "http_router"
+gem "rack-cors"
+
+# Debugging-related.
+gem "pry"
+gem "chrome_logger"
+
+# Test-related.
+group(:test) do
+  gem "rspec"
+end

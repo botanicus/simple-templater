@@ -1,0 +1,83 @@
+#!/bin/zsh
+
+# This script is SH-compatible, but it doesn't mean you have to use SH.
+# You can use bash or zsh and enjoy features of more powerful shells, just change the shebang!
+
+# POST-RECEIVE HOOK
+# ARGV: empty
+# STDIN: [OLD HEAD] [NEW HEAD] refs/heads/alpha
+
+export TERM="xterm-color"
+
+abort()   { printf "\e[1;31m$*\e[0m\n"; exit 1; }
+success() { printf "\e[1;32m$*\e[0m\n"; }
+info()    { printf "\e[1;34m$*\e[0m\n"; }
+debug()   { $DEBUG && printf "\e[1;33m$*\e[0m\n"; }
+
+run()     { info $* ; $*; }
+
+set -- $(cat /dev/stdin)
+
+old=$1 && new=$2 && ref=$3
+export BRANCH=$(basename $ref)
+export DEBUG=true
+export TARGET="/webs/<%= @name %>/site"
+export REPO="/repos/<%= @name %>"
+
+cd $(dirname $TARGET) # the target might not exist yet
+
+# GIT_DIR is "." which should points to bare repozitory
+GIT_DIR="$REPO"
+
+info "Reading /etc/profile ..."
+. /etc/profile
+
+debug
+debug "=== Environment ==="
+debug "PATH: $PATH"
+debug "USER: $USER"
+debug "TERM: $TERM"
+debug "Ruby version: $(ruby --version)"
+debug "Ruby path: $(which ruby)"
+debug
+debug "=== Git-deployer ==="
+debug "TARGET: $TARGET"
+debug "BRANCH: $BRANCH"
+debug "REPO: $REPO"
+debug "PWD: $PWD"
+debug
+
+if [ -d $TARGET ] ; then
+  cd $TARGET
+  GIT_DIR="$PWD/.git"
+  info "Updating $BRANCH in `pwd` ... (from $old' to '$new')"
+  git fetch
+  git reset $new --hard
+else
+  GIT_DIR="$PWD/.git"
+  info "Cloning $BRANCH to $(pwd)/$TARGET (HEAD: '$new') ..."
+  git clone $REPO $TARGET
+  cd $TARGET
+  if [ -x "hooks/clone" ] ; then
+    info "[$PWD] Running clone hook"
+    exec "./hooks/clone"
+  elif [ -f "hooks/clone" ] ; then
+    info "[$PWD] Loading clone hook"
+    . "./hooks/clone" # so user can use functions defined in this hook in his clone hook
+    exit $?
+  else
+    abort "No clone hook found!"
+  fi
+fi
+
+# Update hook
+if [ -x "hooks/update" ] ; then
+  info "[$PWD] Running update hook"
+  exec "./hooks/update"
+elif [ -f "hooks/update" ] ; then
+  info "[$PWD] Loading update hook"
+  . "./hooks/update" # so user can use functions defined in this hook in his update hook
+  exit $?
+else
+  abort "No update hook found!"
+fi

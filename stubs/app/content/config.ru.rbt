@@ -1,0 +1,43 @@
+#!/usr/bin/env rackup -s thin -p <%= @port %>
+# encoding: utf-8
+
+# === Usage === #
+# Can be run using ./config.ru
+
+# === Environment === #
+require File.expand_path("../bin/init.rb", __FILE__)
+
+# === CORS === #
+require "rack/cors"
+
+use Rack::Cors do
+  allow do
+    origins "*"
+    resource "*", headers: :any, methods: [:get, :post, :put, :delete, :options]
+  end
+end
+
+# === Router === #
+# Access variables via env['router.params'][:variable].
+require "http_router"
+
+router = HttpRouter.new
+
+# === Hello world screen === #
+router.get("/").to do |env|
+  html = "<!DOCTYPE html><html><body><h1>Welcome to <%= @name %>!</h1></body></html>\n"
+  [200, {"Content-Type" => "text/html", "Content-Length" => html.bytesize.to_s}, [html]]
+end
+
+# === Assets === #
+# Make sure they won't get served through Rack in production.
+unless ENV["RACK_ENV"] == "production"
+  use Rack::Static, urls: ["/assets"]
+end
+
+# === Chrome logger === #
+require "chrome_logger"
+
+use ChromeLogger
+
+run router

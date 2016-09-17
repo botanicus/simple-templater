@@ -1,0 +1,30 @@
+h3. Setup
+
+<pre>
+  bundle install
+  ./tasks.rb env
+</pre>
+
+h3. Migrations & Seeds
+
+Run @./models/seed.rb@. It will drop all the tables, re-create them and create new set of fake data.
+
+h3. Run the API Server
+
+Run @foreman start@.
+
+h3. Deployment
+
+./tasks.rb deploy
+
+<pre>
+  ./tasks.rb deploy
+  git remote add tagadab tagadab:/repos/<%= @name %>
+  git push tagadab master
+</pre>
+
+Also note that the environment variables are defined in the @.env@ file.
+
+h3. Console
+
+Run @./bin/init.rb@

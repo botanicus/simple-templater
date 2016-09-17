@@ -1,0 +1,131 @@
+#!/usr/bin/env nake
+# encoding: utf-8
+
+# This script should be run via bundle exec ./tasks.rb
+# Unfortunately linux doesn't support more complicated
+# shebang magic, so we can't put bundle exec in there.
+
+# This won't help with nake binary, but at least for the
+# other gems. Setup paths to everything, as we can't count
+# on parsing the .env file as it doesn't have to exist yet.
+
+require "bundler"
+Bundler.setup
+
+require "json"
+
+manifest = JSON.parse(File.read("manifest.json"))
+
+Task.new(:env) do |task|
+  task.description = "Generate .env."
+
+  task.config[:env] = {
+    RACK_ENV: "development",
+    PORT: "<%= @port %>",
+    APP_NAME: manifest["app"]["name"],
+    APP_DOMAIN: "http://localhost:<%= @port %>"
+  }
+
+  def task.convert_to_shell(file, superkey, value)
+    if value.is_a?(Hash)
+      value.each do |key, value|
+        self.convert_to_shell(file, "#{superkey}_#{key}", value)
+      end
+    else
+      file.puts("#{superkey.upcase}=#{value}")
+    end
+  end
+
+  task.define do |server = nil, opts|
+    if server
+      if server_config = manifest["servers"][server]
+        opts.merge!(APP_DOMAIN: manifest["app"]["domain"])
+        server_config.each do |key, value|
+          opts["SERVER_#{key}"] = value
+        end
+      else
+        abort "No server named #{server} in manifest.json."
+      end
+    end
+
+    config = self.config[:env].merge(opts)
+
+    File.open(".env", "w") do |file|
+      config.each do |key, value|
+        self.convert_to_shell(file, key, value)
+      end
+    end
+  end
+end
+
+Task.new(:deploy) do |task|
+  task.description = "Deploy the app using chef-solo."
+
+  def task.recipes
+    Dir.glob("cookbooks/*").
+        select { |item| File.directory?(item) }.
+        map { |directory| File.basename(directory) }
+  end
+
+  def task.generate_chef_conf(manifest, name, server, run_file_path)
+    run_list = self.recipes.map { |recipe| "recipe[#{recipe}]" }
+
+    data = {app: manifest["app"], name: name, server: server, run_list: run_list}
+
+    File.open(run_file_path, "w") do |file|
+      file.puts(data.to_json)
+    end
+  end
+
+  def task.generate_solo_rb(chef)
+    File.open("solo.rb", "w") do |file|
+      file.puts <<-RUBY
+# encoding: utf-8
+
+file_cache_path "#{chef["chef_solo_dir"]}"
+cookbook_path   "#{chef["cookbooks_dir"]}"
+      RUBY
+    end
+  end
+
+  def task.add_git_remote(name, uri)
+    sh "git remote add -f #{name} #{uri}"
+  end
+
+  # TODO: Consider using something like knife-solo, spatula or anything more sane.
+  task.define do |*args, opts|
+    manifest["servers"].each do |name, server|
+      run_file_path = server["chef"]["run_file_path"]
+
+      self.generate_chef_conf(manifest, name, server, run_file_path)
+      sh "scp #{run_file_path} #{server["ssh"]}:/root"
+
+      self.generate_solo_rb(server["chef"])
+      sh "scp solo.rb #{server["ssh"]}:/root"
+
+      sh "rsync -av --progress cookbooks/ #{server["ssh"]}:#{server["chef"]["cookbooks_dir"]}"
+      sh "ssh #{server["ssh"]} /opt/ruby-1.9.3-p286/bin/chef-solo -c solo.rb -j #{run_file_path}"
+
+      sh "rm #{run_file_path}"
+
+      self.add_git_remote(name, "#{server["ssh"]}:#{server["repo"]}")
+    end
+  end
+end
+
+# TODO: This should be done by chef.
+Task.new(:undeploy) do |task|
+  task.define do |*args, opts|
+    manifest["servers"].each do |name, server|
+      sh "ssh #{server["ssh"]} stop <%= @name %>/root-web-1 2> /dev/null"
+      sh "ssh #{server["ssh"]} rm -rf #{server["repo"]} #{server["root"]} #{server["init"]}"
+
+      recipes = Task[:deploy].recipes.map do |recipe|
+        "#{server["chef"]["cookbooks_dir"]}/#{recipe}"
+      end
+
+      sh "ssh #{server["ssh"]} rm -rf #{recipes.join(" ")}"
+      sh "ssh #{server["ssh"]} /etc/init.d/nginx restart"
+    end
+  end
+end

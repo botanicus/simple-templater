@@ -6,7 +6,8 @@ require "simple-templater/hooks/hook"
 module SimpleTemplater::Hooks
   class GitRepository < Hook
     def question
-      CLI.yes?("Do you want to initialize Git repozitory and do initial commit?")
+      # CLI.yes?("Do you want to initialize Git repozitory and do initial commit?")
+      true
     end
 
     def run

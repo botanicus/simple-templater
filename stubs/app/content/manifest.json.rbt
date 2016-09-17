@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "<%= @name %>",
+    "domain": "http://<%= @name %>"
+  },
+  "servers": {
+    "tagadab": {
+      "ssh": "tagadab",
+      "repo": "/repos/<%= @name %>",
+      "root": "/webs/<%= @name %>",
+      "port": "<%= @port %>",
+      "init": "/etc/init/<%= @name %>",
+      "chef": {
+        "run_file_path": "tagadab.json",
+        "chef_solo_dir": "/var/chef-solo",
+        "cookbooks_dir": "/var/chef-solo/cookbooks"
+      }
+    }
+  }
+}

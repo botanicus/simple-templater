@@ -1,0 +1,3 @@
+# We can't use bundle exec ./config.ru -p $PORT because
+# linux can't handle this complicated shebang magic.
+web: bundle exec rackup -s thin -p $PORT

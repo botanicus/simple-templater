@@ -1,0 +1,36 @@
+# encoding: utf-8
+
+# Generate required directories, vhost.conf from
+# the vhost.conf.erb template & restart Nginx server.
+static_site "<%= @name %>" do
+  server_names ["<%= @name %>"]
+end
+
+# Create Git repo.
+# TODO: should be done using the directory resource.
+execute "create bare Git repository" do
+  command "git init /repos/<%= @name %> --bare"
+  action :run
+end
+
+# Copy post-receive hook.
+template "/repos/<%= @name %>/hooks/post-receive" do
+  source "post-receive.erb"
+end
+
+# TODO: Do this in the template block.
+execute "make the post-receive hook executable" do
+  command "chmod +x /repos/<%= @name %>/hooks/post-receive"
+  action :run
+end
+
+execute "save the server name" do
+  command "echo 'export SERVER_NAME=#{node[:name]}' > /webs/<%= @name %>/chef_exports"
+  action :run
+end
+
+# Advise about adding new git remote.
+at_exit do
+  puts "Deploy running:"
+  puts "  git push tagadab master"
+end
